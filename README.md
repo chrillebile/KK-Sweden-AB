@@ -10,7 +10,7 @@ We solved this project on our own, except for:
  + The Peer-review meeting
 
 
-## ER-design - <span style="color:red">NOT FINISHED</span>
+## ER-design
 
 The model is in the file [`er-model.png`](er-model.png):
 
