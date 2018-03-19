@@ -19,10 +19,10 @@ The model is in the file [`er-model.png`](er-model.png):
 </center>
 
 ## Relations
-+ recipes__id__, name)
-+ pallets__id__, amount, productionDate, isBlocked, location, deliveryTime, _recipeId_, _orderId_)
++ recipes(__id__, name)
++ pallets(__id__, amount, productionDate, isBlocked, location, deliveryTime, _recipeId_, _orderId_)
 + orders(__orderId__, latestDeliveryTime, _customerId_)
-+ customers(_id_, name, address)
++ customers(__id__, name, address)
 + orderRecipeAmount(amount, **_orderId_**, **_recipeId_**)
 + recipeIngredients(**_recipeId_**, **_rawMaterialId_**, amount)
 + rawMaterials(__id__, name, amount, unit, lastDeliveryAmount, lastDeliveryTime)
