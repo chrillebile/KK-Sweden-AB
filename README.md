@@ -18,27 +18,14 @@ The model is in the file [`er-model.png`](er-model.png):
     <img src="er-model.png" width="100%">
 </center>
 
-## Relations - <span style="color:red">NOT FINISHED</span>
-
-The ER-model above gives the following relations (neither
-[Markdown](https://docs.gitlab.com/ee/user/markdown.html)
-nor [HTML5](https://en.wikipedia.org/wiki/HTML5) handles
-underlining withtout resorting to
-[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets),
-so we use bold face for primary keys, italicized face for
-foreign keys, and bold italicized face for attributes which
-are both primary keys and foreign keys):
-
-+ authors(**author_name**, nationality)
-+ books(**isbn**, book_title, published_year, publisher)
-+ authored_books(**_author_name_**, **_isbn_**)
-+ copies(**copy_barcode**, _isbn_, _library_name_, shelf)
-+ ...
-
-(this should be replaced with your own relations, of course,
-but use the same way of marking primary keys and foreign
-keys).
-
+## Relations
++ recipes__id__, name)
++ pallets__id__, amount, productionDate, isBlocked, location, deliveryTime, _recipeId_, _orderId_)
++ orders(__orderId__, latestDeliveryTime, _customerId_)
++ customers(_id_, name, address)
++ orderRecipeAmount(amount, **_orderId_**, **_recipeId_**)
++ recipeIngredients(**_recipeId_**, **_rawMaterialId_**, amount)
++ rawMaterials(__id__, name, amount, unit, lastDeliveryAmount, lastDeliveryTime)
 
 ## Scripts to set up database - <span style="color:red">NOT FINISHED</span>
 
