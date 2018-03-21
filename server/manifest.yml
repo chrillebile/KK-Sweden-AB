@@ -1,0 +1,7 @@
+---
+applications:
+- name: KK-Sweden REST API
+  memory: 256M
+  instances: 1
+  host: KK-Sweden
+  path: build/libs/KK-Sweden-REST-0.1.0.jar
