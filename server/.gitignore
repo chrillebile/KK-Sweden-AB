@@ -116,4 +116,6 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 gradle/
+
+KK-SwedenDB.db
 # End of https://www.gitignore.io/api/java,maven,gradle,intellij+all
