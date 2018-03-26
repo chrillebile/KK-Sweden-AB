@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.Models.Pallet;
 import server.Repositories.PalletRepository;
+import server.Resources.PalletResource;
 
 @RestController
 @RequestMapping(value = "/pallets")
@@ -16,7 +17,9 @@ public class PalletController {
     private PalletRepository palletRepository;
 
     @RequestMapping(value = "/{id}")
-    public ResponseEntity<Pallet> getPalletById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(palletRepository.getPallet(Integer.parseInt(id)), HttpStatus.OK);
+    public ResponseEntity<PalletResource> getPalletById(@PathVariable("id") String id) {
+        Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
+
+        return new ResponseEntity<>(new PalletResource(pallet), HttpStatus.OK);
     }
 }

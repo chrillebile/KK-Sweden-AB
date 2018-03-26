@@ -6,6 +6,7 @@ import server.Models.Pallet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 /**
  * The repository for accessing data from pallets.
@@ -32,6 +33,8 @@ public class PalletRepository extends server.Repositories.Repository {
                 pallet = new Pallet(rs.getInt("id"), rs.getInt("amount"),
                         rs.getDate("productionDate"), rs.getBoolean("isBlocked"),
                         rs.getString("location"), rs.getTimestamp("deliveryTime"));
+            } else {
+                throw new NoSuchElementException("Element not found");
             }
         } catch (SQLException e) {
             e.printStackTrace();
