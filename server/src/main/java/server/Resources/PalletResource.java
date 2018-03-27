@@ -1,13 +1,12 @@
 package server.Resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.hateoas.ResourceSupport;
 import server.Models.Pallet;
 
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class PalletResource extends ResourceSupport {
+public class PalletResource {
     private final long id;
     private final int amount;
     private final Date productionDate;

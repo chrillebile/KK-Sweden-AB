@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import server.DataResponse;
 import server.Models.RawMaterial;
 import server.Repositories.RawMaterialRepository;
 import server.Resources.RawMaterialResource;
@@ -26,18 +27,18 @@ public class RawMaterialController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<RawMaterialResource>> getAllMaterials(){
+    public ResponseEntity<DataResponse> getAllMaterials(){
         List<RawMaterial> rawMaterialList = rawMaterialRepository.getAllRawMaterial();
         List<RawMaterialResource> rawMaterialResourceList = new ArrayList<>();
         for (RawMaterial x : rawMaterialList) {
             rawMaterialResourceList.add(new RawMaterialResource(x));
         }
-        return new ResponseEntity<>(rawMaterialResourceList, HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponse(rawMaterialResourceList), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<RawMaterialResource> findMaterialById(@PathVariable("id") String id){
+    public ResponseEntity<DataResponse> findMaterialById(@PathVariable("id") String id){
         RawMaterial rawMaterial = rawMaterialRepository.getRawMaterial(Integer.parseInt(id));
-        return new ResponseEntity<>(new RawMaterialResource(rawMaterial), HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponse(new RawMaterialResource(rawMaterial)), HttpStatus.OK);
     }
 }

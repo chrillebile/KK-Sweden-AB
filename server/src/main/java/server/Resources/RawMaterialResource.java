@@ -6,7 +6,7 @@ import server.Models.RawMaterial;
 
 import java.sql.Timestamp;
 
-public class RawMaterialResource extends ResourceSupport{
+public class RawMaterialResource {
 
     private final long id;
     private final String name;
@@ -25,7 +25,7 @@ public class RawMaterialResource extends ResourceSupport{
     }
 
     @JsonProperty("id")
-    public long getRawMaterialId(){
+    public long getRawMaterialId() {
         return id;
     }
 

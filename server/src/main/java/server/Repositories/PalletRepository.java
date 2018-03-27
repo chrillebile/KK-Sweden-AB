@@ -6,6 +6,8 @@ import server.Models.Pallet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -41,5 +43,31 @@ public class PalletRepository extends server.Repositories.Repository {
         }
 
         return pallet;
+    }
+
+    /**
+     * Retrieve all pallets found in the database.
+     * @return The found pallets in a list.
+     */
+    public List<Pallet> getPallets() {
+        String query = "SELECT * FROM pallets";
+
+        List<Pallet> palletList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ResultSet rs = ps.executeQuery();
+
+            // next() returns true if there were more rows found
+            if (rs.next()) {
+                palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
+                        rs.getDate("productionDate"), rs.getBoolean("isBlocked"),
+                        rs.getString("location"), rs.getTimestamp("deliveryTime")));
+            } else {
+                throw new NoSuchElementException("Element not found");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return palletList;
     }
 }
