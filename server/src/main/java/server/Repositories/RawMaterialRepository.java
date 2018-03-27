@@ -6,6 +6,8 @@ import server.Models.RawMaterial;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -13,6 +15,25 @@ import java.util.NoSuchElementException;
  */
 @Repository
 public class RawMaterialRepository extends server.Repositories.Repository {
+
+    public List<RawMaterial> getAllRawMaterial(){
+        String query = "SELECT * FROM rawMaterials";
+
+        List<RawMaterial> rawMaterial = null;
+        try(PreparedStatement ps = connection.prepareStatement(query)){
+            ResultSet rs = ps.executeQuery();
+            rawMaterial = new ArrayList<>();
+            while (rs.next()){
+                rawMaterial.add(new RawMaterial(rs.getInt("id"), rs.getString("name"),
+                        rs.getInt("amount"), rs.getString("unit"),
+                        rs.getTimestamp("lastDeliveryTime"), rs.getInt("lastDeliveryAmount")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rawMaterial;
+    }
+
     public RawMaterial getRawMaterial(int id){
         String query = "SELECT * FROM rawMaterials WHERE id=?";
 

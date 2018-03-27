@@ -11,6 +11,9 @@ import server.Models.RawMaterial;
 import server.Repositories.RawMaterialRepository;
 import server.Resources.RawMaterialResource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/rawMaterials")
 public class RawMaterialController {
@@ -23,8 +26,13 @@ public class RawMaterialController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<RawMaterial> getAllMaterials(){
-        return null;
+    public ResponseEntity<List<RawMaterialResource>> getAllMaterials(){
+        List<RawMaterial> rawMaterialList = rawMaterialRepository.getAllRawMaterial();
+        List<RawMaterialResource> rawMaterialResourceList = new ArrayList<>();
+        for (RawMaterial x : rawMaterialList) {
+            rawMaterialResourceList.add(new RawMaterialResource(x));
+        }
+        return new ResponseEntity<>(rawMaterialResourceList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
