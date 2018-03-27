@@ -13,8 +13,12 @@ import server.Resources.PalletResource;
 @RestController
 @RequestMapping(value = "/pallets")
 public class PalletController {
+    private final PalletRepository palletRepository;
+
     @Autowired
-    private PalletRepository palletRepository;
+    public PalletController(PalletRepository palletRepository) {
+        this.palletRepository = palletRepository;
+    }
 
     @RequestMapping(value = "/{id}")
     public ResponseEntity<PalletResource> getPalletById(@PathVariable("id") String id) {
