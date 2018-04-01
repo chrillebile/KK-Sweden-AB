@@ -1,5 +1,4 @@
 import * as React from 'react';
-import TableRow from 'Components/TableRow';
 import PalletInterface from 'Models/PalletModel';
 
 interface Props {
@@ -14,11 +13,30 @@ export class Table extends React.Component<Props, State> {
     const { data } = this.props;
     return (
       <table>
-        {data.map(row => {
-          return (
-            <TableRow key={row.id} row={row} />
-          );
-        })}
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Amount</th>
+            <th>ProductionDate</th>
+            <th>Location</th>
+            <th>DeliveryTime</th>
+            <th>Blocked</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map(row => {
+            return (
+              <tr key={row.id}>
+                <td>{row.id}</td>
+                <td>{row.amount}</td>
+                <td>{row.productionDate}</td>
+                <td>{row.location}</td>
+                <td>{row.deliveryTime}</td>
+                <td>{row.blocked}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     );
   }

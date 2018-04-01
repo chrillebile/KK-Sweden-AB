@@ -15,6 +15,14 @@ export class PalletSearch extends React.Component<Props> {
       blocked: false,
       id: 1,
     },
+    {
+      amount: 137,
+      productionDate: null,
+      location: null,
+      deliveryTime: null,
+      blocked: false,
+      id: 2,
+    },
   ];
   render() {
     return (
