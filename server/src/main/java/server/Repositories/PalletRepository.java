@@ -57,12 +57,15 @@ public class PalletRepository extends server.Repositories.Repository {
             ResultSet rs = ps.executeQuery();
 
             // next() returns true if there were more rows found
-            if (rs.next()) {
+            while (rs.next()) {
                 palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
                         rs.getDate("productionDate"), rs.getBoolean("isBlocked"),
                         rs.getString("location"), rs.getTimestamp("deliveryTime")));
-            } else {
-                throw new NoSuchElementException("Element not found");
+            }
+
+            // If it is empty, then throw an error
+            if (palletList.isEmpty()) {
+                throw new NoSuchElementException("Elements not found");
             }
         } catch (SQLException e) {
             e.printStackTrace();
