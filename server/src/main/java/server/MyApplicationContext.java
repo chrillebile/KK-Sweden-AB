@@ -19,6 +19,8 @@ public class MyApplicationContext {
         ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
         comboPooledDataSource.setDriverClass("org.sqlite.JDBC");
         comboPooledDataSource.setJdbcUrl("jdbc:sqlite:KK-SwedenDB.db");
+        comboPooledDataSource.setConnectionCustomizerClassName(ConnectionCustomizer.class.getName());
+
         return comboPooledDataSource;
     }
 }
