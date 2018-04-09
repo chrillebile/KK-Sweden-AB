@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import server.Models.Pallet;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PalletResource {
     private final long id;
     private final int amount;
-    private final Date productionDate;
+    private final LocalDate productionDate;
     private final boolean isBlocked;
     private final String location;
     private final Timestamp deliveryTime;
@@ -32,7 +32,7 @@ public class PalletResource {
         return amount;
     }
 
-    public Date getProductionDate() {
+    public LocalDate getProductionDate() {
         return productionDate;
     }
 

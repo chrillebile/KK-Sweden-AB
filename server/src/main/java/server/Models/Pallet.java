@@ -1,24 +1,29 @@
 package server.Models;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Pallet {
 
-    private final long id;
-    private final int amount;
-    private final Date productionDate;
-    private final boolean isBlocked;
-    private final String location;
-    private final Timestamp deliveryTime;
+    private long id;
+    private int amount;
+    private LocalDate productionDate;
+    private boolean isBlocked;
+    private String location;
+    private Timestamp deliveryTime;
 
-    public Pallet(long id, int amount, Date productionDate, boolean isBlocked, String location, Timestamp deliveryTime) {
+    public Pallet(long id, int amount, LocalDate productionDate, boolean isBlocked, String location, Timestamp deliveryTime) {
         this.id = id;
         this.amount = amount;
         this.productionDate = productionDate;
         this.isBlocked = isBlocked;
         this.location = location;
         this.deliveryTime = deliveryTime;
+    }
+
+    public Pallet() {
     }
 
     public long getId() {
@@ -29,7 +34,7 @@ public class Pallet {
         return amount;
     }
 
-    public Date getProductionDate() {
+    public LocalDate getProductionDate() {
         return productionDate;
     }
 
@@ -43,5 +48,29 @@ public class Pallet {
 
     public Timestamp getDeliveryTime() {
         return deliveryTime;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setProductionDate(LocalDate productionDate) {
+        this.productionDate = productionDate;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDeliveryTime(Timestamp deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 }

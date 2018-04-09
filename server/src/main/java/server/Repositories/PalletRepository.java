@@ -33,7 +33,7 @@ public class PalletRepository extends server.Repositories.Repository {
             // next() returns true if there were more rows found
             if (rs.next()) {
                 pallet = new Pallet(rs.getInt("id"), rs.getInt("amount"),
-                        rs.getDate("productionDate"), rs.getBoolean("isBlocked"),
+                        rs.getDate("productionDate").toLocalDate(), rs.getBoolean("isBlocked"),
                         rs.getString("location"), rs.getTimestamp("deliveryTime"));
             } else {
                 throw new NoSuchElementException("Element not found");
@@ -47,6 +47,7 @@ public class PalletRepository extends server.Repositories.Repository {
 
     /**
      * Retrieve all pallets found in the database.
+     *
      * @return The found pallets in a list.
      */
     public List<Pallet> getPallets() {
@@ -59,7 +60,7 @@ public class PalletRepository extends server.Repositories.Repository {
             // next() returns true if there were more rows found
             while (rs.next()) {
                 palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
-                        rs.getDate("productionDate"), rs.getBoolean("isBlocked"),
+                        rs.getDate("productionDate").toLocalDate(), rs.getBoolean("isBlocked"),
                         rs.getString("location"), rs.getTimestamp("deliveryTime")));
             }
 
@@ -72,5 +73,43 @@ public class PalletRepository extends server.Repositories.Repository {
         }
 
         return palletList;
+    }
+
+    /**
+     * Create a pallet.
+     *
+     * @param palletToBeCreated The pallet object which will be saved to the database.
+     * @param recipeId          Foregin key to recipes.
+     * @param orderId           Foreign key to orders.
+     * @return An empty Pallet object where only the id is set.
+     */
+    public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
+        String query = "INSERT INTO pallets (amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        Pallet pallet = null;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            connection.setAutoCommit(false);
+            ps.setInt(1, palletToBeCreated.getAmount());
+            ps.setObject(2, palletToBeCreated.getProductionDate());
+            ps.setBoolean(3, palletToBeCreated.isBlocked());
+            ps.setString(4, palletToBeCreated.getLocation());
+            ps.setTimestamp(5, palletToBeCreated.getDeliveryTime());
+            ps.setInt(6, recipeId);
+            ps.setInt(7, orderId);
+
+            ps.executeUpdate();
+
+            PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
+            ResultSet rs = row.executeQuery();
+
+            connection.commit();
+
+            pallet = new Pallet();
+            pallet.setId(rs.getLong(1));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error("Could not create pallet. See error log for more information");
+        }
+        return pallet;
     }
 }

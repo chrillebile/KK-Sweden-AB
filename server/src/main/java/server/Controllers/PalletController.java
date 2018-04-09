@@ -3,16 +3,20 @@ package server.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.DataResponse;
 import server.Models.Pallet;
 import server.Repositories.PalletRepository;
 import server.Resources.PalletResource;
 
+import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/pallets")
@@ -53,5 +57,56 @@ public class PalletController {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
 
         return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);
+    }
+
+    /**
+     * Create a pallet. Required fields are amount, productionDate, blocked, recipeId and orderId.
+     *
+     * @param body
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<DataResponse> createPallet(@Valid @RequestBody DataResponse body) {
+        this.validatePost((Map) body.getData(), Arrays.asList("amount", "productionDate", "blocked", "recipeId", "orderId"));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
+
+        Pallet pallet = new Pallet();
+
+        pallet.setAmount((Integer) ((Map) body.getData()).get("amount"));
+        if (((Map) body.getData()).get("productionDate") == null) {
+            pallet.setProductionDate(null);
+        } else {
+            pallet.setProductionDate(LocalDate.parse((String) ((Map) body.getData()).get("productionDate"), formatter));
+        }
+        pallet.setBlocked((Boolean) ((Map) body.getData()).get("blocked"));
+        pallet.setLocation((String) ((Map) body.getData()).get("location"));
+
+        if (((Map) body.getData()).get("deliveryTime") == null) {
+            pallet.setDeliveryTime(null);
+        } else {
+            pallet.setDeliveryTime(new Timestamp((Long) ((Map) body.getData()).get("deliveryTime")));
+        }
+
+        // Create the pallet and return it.
+        Pallet createdPallet = palletRepository.createPallet(pallet, (Integer) ((Map) body.getData()).get("recipeId"), (Integer) ((Map) body.getData()).get("orderId"));
+        createdPallet = palletRepository.getPallet((int) createdPallet.getId());
+        return new ResponseEntity<>(new DataResponse(new PalletResource(createdPallet)), HttpStatus.CREATED);
+    }
+
+    /**
+     * Validates the incoming key => value pair of json (converted to a java object).
+     *
+     * @param body
+     * @param notNullKeys A list of keys which are not allowed to be null (at the same time they must be present).
+     * @throws RuntimeException
+     */
+    private void validatePost(Map body, List<String> notNullKeys) throws RuntimeException {
+        for (String value :
+                notNullKeys) {
+            if (!body.containsKey(value) || body.get(value) == null) {
+                throw new IllegalArgumentException("Parameter " + value + " is either not present or null");
+            }
+        }
     }
 }
