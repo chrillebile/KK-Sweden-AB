@@ -3,6 +3,6 @@ export default interface PalletModel {
   amount: number;
   productionDate: string | null;
   location: string | null;
-  deliveryTime: string | null;
+  deliveryTime: number | null;
   blocked: boolean;
 }

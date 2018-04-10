@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { RootState } from 'app/reducers';
 import { omit } from 'app/utils';
 import PalletSearchComponent from 'Components/PalletSearchComponent';
+import Header from 'Containers/Header';
 
 interface Props {
   actions: PalletActions,
@@ -29,6 +30,7 @@ export class PalletSearch extends React.Component<Props> {
   render() {
     return (
       <div>
+        <Header/>
         <Table data={this.props.pallets.palletItems}/>
         <PalletSearchComponent actions={this.props.actions} resetPalletView={this.resetPalletView}/>
       </div>

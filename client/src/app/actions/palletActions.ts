@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { RootState } from 'app/reducers';
 import axios from 'axios';
 import { APIConfig } from 'app/config';
+import PalletModel from 'Models/PalletModel';
 
 
 export namespace PalletActions {
@@ -9,6 +10,9 @@ export namespace PalletActions {
     GET_PALLETS_REQUEST = 'GET_PALLETS_REQUEST',
     GET_PALLETS_SUCCESS = 'GET_PALLETS_SUCCESS',
     GET_PALLETS_FAILURE = 'GET_PALLETS_FAILURE',
+    CREATE_PALLET_REQUEST = 'CREATE_PALLET_REQUEST',
+    CREATE_PALLET_SUCCESS = 'CREATE_PALLET_SUCCESS',
+    CREATE_PALLET_FAILURE = 'CREATE_PALLET_FAILURE'
   }
 
   export function getPallets() {
@@ -48,6 +52,30 @@ export namespace PalletActions {
     };
   }
 
+  export function createPallet(pallet : PalletModel, recipeId : number, orderId : number) {
+    return (dispatch: Dispatch<RootState>) => {
+      if (pallet.deliveryTime && typeof pallet.deliveryTime ) {}
+
+      dispatch(createPalletRequest());
+      axios.post(APIConfig.url + '/pallets', {
+        data: {
+          amount: pallet.amount,
+          productionDate: pallet.productionDate,
+          location: pallet.location,
+          deliveryTime: pallet.deliveryTime,
+          blocked: pallet.blocked,
+          recipeId: recipeId,
+          orderId: orderId
+        }
+      }).then((response) => {
+        dispatch(createPalletSuccess());
+      })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+  }
+
   function getPalletsSuccess(payload: object | null) {
     return {
       type: Type.GET_PALLETS_SUCCESS,
@@ -63,6 +91,18 @@ export namespace PalletActions {
     return {
       type: Type.GET_PALLETS_REQUEST
     };
+  }
+
+  function createPalletRequest() {
+    return {
+      type: Type.CREATE_PALLET_REQUEST
+    }
+  }
+
+  function createPalletSuccess() {
+    return {
+      type: Type.CREATE_PALLET_SUCCESS
+    }
   }
 }
 

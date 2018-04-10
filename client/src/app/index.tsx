@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route } from 'react-router';
+import { BrowserRouter } from 'react-router-dom'
 
 import { hot } from 'react-hot-loader';
 import PalletSearch from 'Containers/PalletSearch/PalletSearch';
+import PalletCreate from 'Containers/PalletCreate';
 
 export const App = hot(module)(() => (
-  <Switch>
-    <Route path="/" component={PalletSearch} />
-  </Switch>
+  <BrowserRouter>
+    <div>
+      <Route exact path="/" component={PalletSearch} />
+      <Route path="/createPallet" component={PalletCreate} />
+    </div>
+  </BrowserRouter>
 ));
