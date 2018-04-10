@@ -6,10 +6,12 @@ public class Order {
 
     private final long id;
     private final Timestamp lastDeliveryTime;
+    private final int customerId;
 
-    public Order(long id, Timestamp lastDeliveryTime) {
+    public Order(long id, Timestamp lastDeliveryTime, int customerId) {
         this.id = id;
         this.lastDeliveryTime = lastDeliveryTime;
+        this.customerId = customerId;
     }
 
     public long getId() {
@@ -18,5 +20,9 @@ public class Order {
 
     public Timestamp getLastDeliveryTime() {
         return lastDeliveryTime;
+    }
+
+    public int getCustomerId() {
+        return customerId;
     }
 }
