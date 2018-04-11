@@ -46,7 +46,7 @@ public class PalletController {
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/getByDates"}, method = RequestMethod.GET)
+    @RequestMapping(value = "/getByDates", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
         List<Pallet> palletList = palletRepository.getPallets(LocalDate.parse(startDate), LocalDate.parse(endDate));
         List<PalletResource> palletResources = new ArrayList<>();
