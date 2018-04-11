@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/rawMaterials")
+@RequestMapping(value = "/api/rawMaterials")
 public class RawMaterialController {
 
     private final RawMaterialRepository rawMaterialRepository;

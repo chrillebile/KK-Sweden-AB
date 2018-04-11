@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/pallets")
+@RequestMapping(value = "/api/pallets")
 public class PalletController {
     private final PalletRepository palletRepository;
 
@@ -59,7 +59,7 @@ public class PalletController {
 
     @RequestMapping(params = "isBlocked", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked){
-        Boolean blocked = isBlocked.equals("0");
+        Boolean blocked = isBlocked.equals("true");
         List<Pallet> palletList = palletRepository.getPallets(blocked);
         List<PalletResource> palletResources = new ArrayList<>();
         for(Pallet pallet: palletList){
@@ -84,8 +84,8 @@ public class PalletController {
      * @param id
      * @return
      */
-    @RequestMapping(params = "id", method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getPalletById(@RequestParam("id") String id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getPalletById(@PathVariable("id") String id) {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
 
         return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);

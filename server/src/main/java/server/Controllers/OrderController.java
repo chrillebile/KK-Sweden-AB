@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "/api/orders")
 public class OrderController {
 
     private final OrderRepository orderRepository;
