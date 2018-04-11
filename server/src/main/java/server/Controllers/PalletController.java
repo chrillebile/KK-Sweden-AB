@@ -46,7 +46,7 @@ public class PalletController {
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/getPalletsBetweenDates"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/getByDates"}, method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
         List<Pallet> palletList = palletRepository.getPallets(LocalDate.parse(startDate), LocalDate.parse(endDate));
         List<PalletResource> palletResources = new ArrayList<>();
@@ -57,7 +57,7 @@ public class PalletController {
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getPalletsWhichBlocked", method = RequestMethod.GET)
+    @RequestMapping(value = "/getBlocked", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked){
         Boolean blocked = isBlocked.equals("0");
         List<Pallet> palletList = palletRepository.getPallets(blocked);
@@ -68,7 +68,7 @@ public class PalletController {
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getDeliveredPalletsForCustomers", method = RequestMethod.GET)
+    @RequestMapping(value = "/getDeliveredByCustomers", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@RequestParam("id") String id){
         List<Pallet> palletList = palletRepository.getPallets(Integer.parseInt(id));
         List<PalletResource> palletResources = new ArrayList<>();
@@ -84,7 +84,7 @@ public class PalletController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    @RequestMapping(value = "/getById", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletById(@RequestParam("id") String id) {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
 
