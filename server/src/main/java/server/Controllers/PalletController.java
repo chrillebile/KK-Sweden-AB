@@ -33,7 +33,7 @@ public class PalletController {
      *
      * @return
      */
-    @RequestMapping(value = "")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllPallets() {
         List<Pallet> palletList = palletRepository.getPallets();
 
@@ -46,13 +46,46 @@ public class PalletController {
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
     }
 
+    @RequestMapping(value = {"/{startDate}/{endDate}"}, method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getPalletsBetweenDates(@PathVariable("startDate") String startDate, @PathVariable("endDate") String endDate){
+
+        List<Pallet> palletList = palletRepository.getPallets(LocalDate.parse(startDate), LocalDate.parse(endDate));
+        List<PalletResource> palletResources = new ArrayList<>();
+        for(Pallet pallet: palletList){
+            palletResources.add(new PalletResource(pallet));
+        }
+
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/blocked/{isBlocked}", method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getPalletsWhichBlocked(@PathVariable("isBlocked") String isBlocked){
+        Boolean blocked = isBlocked.equals("1");
+        List<Pallet> palletList = palletRepository.getPallets(blocked);
+        List<PalletResource> palletResources = new ArrayList<>();
+        for(Pallet pallet: palletList){
+            palletResources.add(new PalletResource(pallet));
+        }
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customerDelivered/{id}", method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@PathVariable("id") String id){
+        List<Pallet> palletList = palletRepository.getPallets(Integer.parseInt(id));
+        List<PalletResource> palletResources = new ArrayList<>();
+        for(Pallet pallet: palletList){
+            palletResources.add(new PalletResource(pallet));
+        }
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
     /**
      * Retrieve a single pallet, identified by it's id.
      *
      * @param id
      * @return
      */
-    @RequestMapping(value = "/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletById(@PathVariable("id") String id) {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
 
@@ -65,7 +98,7 @@ public class PalletController {
      * @param body
      * @return
      */
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<DataResponse> createPallet(@Valid @RequestBody DataResponse body) {
         this.validatePost((Map) body.getData(), Arrays.asList("amount", "productionDate", "blocked", "recipeId", "orderId"));
 
