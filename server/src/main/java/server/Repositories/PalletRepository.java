@@ -43,10 +43,10 @@ public class PalletRepository extends server.Repositories.Repository {
      *
      * @return The found pallets in a list.
      */
-    public List<Pallet> getPallets(){
+    public List<Pallet> getPallets() {
         String query = "SELECT * FROM pallets";
         List<Pallet> palletList = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             this.parseResults(ps, palletList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class PalletRepository extends server.Repositories.Repository {
      * Retrieve pallets between two dates found in the database.
      *
      * @param startDate Date to search from.
-     * @param endDate Date to search to.
+     * @param endDate   Date to search to.
      * @return The found pallets in a list.
      */
     public List<Pallet> getPallets(LocalDate startDate, LocalDate endDate) {
@@ -74,10 +74,10 @@ public class PalletRepository extends server.Repositories.Repository {
         return palletList;
     }
 
-    public List<Pallet> getPallets(boolean isBlocked){
+    public List<Pallet> getPallets(boolean isBlocked) {
         String query = "SELECT * FROM pallets WHERE isBlocked = ?";
         List<Pallet> palletList = new ArrayList<>();
-        try(PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, isBlocked);
             this.parseResults(ps, palletList);
         } catch (SQLException e) {
@@ -86,10 +86,10 @@ public class PalletRepository extends server.Repositories.Repository {
         return palletList;
     }
 
-    public List<Pallet> getPallets(Integer id){
+    public List<Pallet> getPallets(Integer id) {
         String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE orders.customerId = ?";
         List<Pallet> palletList = new ArrayList<>();
-        try(PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
             this.parseResults(ps, palletList);
         } catch (SQLException e) {

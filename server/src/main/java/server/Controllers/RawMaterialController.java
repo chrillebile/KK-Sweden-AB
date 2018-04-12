@@ -27,7 +27,7 @@ public class RawMaterialController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getAllMaterials(){
+    public ResponseEntity<DataResponse> getAllMaterials() {
         List<RawMaterial> rawMaterialList = rawMaterialRepository.getAllRawMaterial();
         List<RawMaterialResource> rawMaterialResourceList = new ArrayList<>();
         for (RawMaterial x : rawMaterialList) {
@@ -37,7 +37,7 @@ public class RawMaterialController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> findMaterialById(@PathVariable("id") String id){
+    public ResponseEntity<DataResponse> findMaterialById(@PathVariable("id") String id) {
         RawMaterial rawMaterial = rawMaterialRepository.getRawMaterial(Integer.parseInt(id));
         return new ResponseEntity<>(new DataResponse(new RawMaterialResource(rawMaterial)), HttpStatus.OK);
     }

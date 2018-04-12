@@ -47,10 +47,10 @@ public class PalletController {
     }
 
     @RequestMapping(params = {"startDate", "endDate"}, method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate){
+    public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         List<Pallet> palletList = palletRepository.getPallets(LocalDate.parse(startDate), LocalDate.parse(endDate));
         List<PalletResource> palletResources = new ArrayList<>();
-        for(Pallet pallet: palletList){
+        for (Pallet pallet : palletList) {
             palletResources.add(new PalletResource(pallet));
         }
 
@@ -58,21 +58,21 @@ public class PalletController {
     }
 
     @RequestMapping(params = "isBlocked", method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked){
+    public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked) {
         boolean blocked = isBlocked.equals("true");
         List<Pallet> palletList = palletRepository.getPallets(blocked);
         List<PalletResource> palletResources = new ArrayList<>();
-        for(Pallet pallet: palletList){
+        for (Pallet pallet : palletList) {
             palletResources.add(new PalletResource(pallet));
         }
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
     }
 
     @RequestMapping(params = "customerId", method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@RequestParam("customerId") String id){
+    public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@RequestParam("customerId") String id) {
         List<Pallet> palletList = palletRepository.getPallets(Integer.parseInt(id));
         List<PalletResource> palletResources = new ArrayList<>();
-        for(Pallet pallet: palletList){
+        for (Pallet pallet : palletList) {
             palletResources.add(new PalletResource(pallet));
         }
         return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);

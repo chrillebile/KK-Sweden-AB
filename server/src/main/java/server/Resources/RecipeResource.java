@@ -14,11 +14,11 @@ public class RecipeResource {
     }
 
     @JsonProperty("id")
-    public long getRecipeId(){
+    public long getRecipeId() {
         return id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 }

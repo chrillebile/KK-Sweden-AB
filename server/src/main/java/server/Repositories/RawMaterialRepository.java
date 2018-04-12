@@ -16,14 +16,14 @@ import java.util.NoSuchElementException;
 @Repository
 public class RawMaterialRepository extends server.Repositories.Repository {
 
-    public List<RawMaterial> getAllRawMaterial(){
+    public List<RawMaterial> getAllRawMaterial() {
         String query = "SELECT * FROM rawMaterials";
 
         List<RawMaterial> rawMaterial = null;
-        try(PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();
             rawMaterial = new ArrayList<>();
-            while (rs.next()){
+            while (rs.next()) {
                 rawMaterial.add(new RawMaterial(rs.getInt("id"), rs.getString("name"),
                         rs.getInt("amount"), rs.getString("unit"),
                         rs.getTimestamp("lastDeliveryTime"), rs.getInt("lastDeliveryAmount")));
@@ -34,22 +34,22 @@ public class RawMaterialRepository extends server.Repositories.Repository {
         return rawMaterial;
     }
 
-    public RawMaterial getRawMaterial(int id){
+    public RawMaterial getRawMaterial(int id) {
         String query = "SELECT * FROM rawMaterials WHERE id=?";
 
         RawMaterial rawMaterial = null;
 
-        try(PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
 
             // To check if there more than one result, which there shouldn't be.
-            if(rs.next()){
+            if (rs.next()) {
                 rawMaterial = new RawMaterial(rs.getInt("id"), rs.getString("name"),
                         rs.getInt("amount"), rs.getString("unit"),
                         rs.getTimestamp("lastDeliveryTime"), rs.getInt("lastDeliveryAmount"));
-            }else {
+            } else {
                 throw new NoSuchElementException("Element not found");
             }
         } catch (SQLException e) {
