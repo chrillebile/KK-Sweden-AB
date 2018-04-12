@@ -87,7 +87,7 @@ public class PalletRepository extends server.Repositories.Repository {
     }
 
     public List<Pallet> getPallets(Integer id){
-        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE customerId = ?";
+        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE orders.customerId = ?";
         List<Pallet> palletList = new ArrayList<>();
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, id);
