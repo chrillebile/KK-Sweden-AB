@@ -29,7 +29,7 @@ public class PalletRepository extends server.Repositories.Repository {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
             List<Pallet> palletList = new ArrayList<>();
-            parseResults(ps, palletList);
+            this.parseResults(ps, palletList);
             pallet = palletList.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,7 +47,7 @@ public class PalletRepository extends server.Repositories.Repository {
         String query = "SELECT * FROM pallets";
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)){
-            parseResults(ps, palletList);
+            this.parseResults(ps, palletList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class PalletRepository extends server.Repositories.Repository {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, String.valueOf(startDate));
             ps.setString(2, String.valueOf(endDate));
-            parseResults(ps, palletList);
+            this.parseResults(ps, palletList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class PalletRepository extends server.Repositories.Repository {
         List<Pallet> palletList = new ArrayList<>();
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setBoolean(1, isBlocked);
-            parseResults(ps, palletList);
+            this.parseResults(ps, palletList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class PalletRepository extends server.Repositories.Repository {
         List<Pallet> palletList = new ArrayList<>();
         try(PreparedStatement ps = connection.prepareStatement(query)){
             ps.setInt(1, id);
-            parseResults(ps, palletList);
+            this.parseResults(ps, palletList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
