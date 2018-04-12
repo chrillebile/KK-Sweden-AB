@@ -74,7 +74,7 @@ public class PalletRepository extends server.Repositories.Repository {
         return palletList;
     }
 
-    public List<Pallet> getPallets(Boolean isBlocked){
+    public List<Pallet> getPallets(boolean isBlocked){
         String query = "SELECT * FROM pallets WHERE isBlocked = ?";
         List<Pallet> palletList = new ArrayList<>();
         try(PreparedStatement ps = connection.prepareStatement(query)){

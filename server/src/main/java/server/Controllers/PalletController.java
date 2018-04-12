@@ -59,7 +59,7 @@ public class PalletController {
 
     @RequestMapping(params = "isBlocked", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked){
-        Boolean blocked = isBlocked.equals("true");
+        boolean blocked = isBlocked.equals("true");
         List<Pallet> palletList = palletRepository.getPallets(blocked);
         List<PalletResource> palletResources = new ArrayList<>();
         for(Pallet pallet: palletList){
