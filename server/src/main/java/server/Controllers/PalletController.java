@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/api/pallets")
+@RequestMapping(value = "/pallets")
 public class PalletController {
     private final PalletRepository palletRepository;
 

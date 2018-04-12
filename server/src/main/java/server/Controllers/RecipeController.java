@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/recipes")
+@RequestMapping("/recipes")
 public class RecipeController {
 
     private final RecipeRepository recipeRepository;
