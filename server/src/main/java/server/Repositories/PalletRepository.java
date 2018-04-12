@@ -75,7 +75,7 @@ public class PalletRepository extends server.Repositories.Repository {
     }
 
     /**
-     * Retrieve pallets which is either blocked or not.
+     * Retrieve pallets which are either blocked or not.
      *
      * @param isBlocked Status of blockage.
      * @return The found pallets.

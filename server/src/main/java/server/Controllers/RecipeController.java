@@ -32,7 +32,7 @@ public class RecipeController {
     /**
      * Retrieve all recipes.
      *
-     * @return List of all recipes as a api response.
+     * @return List of all recipes as an api response.
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllRecipes() {

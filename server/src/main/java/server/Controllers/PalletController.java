@@ -34,7 +34,7 @@ public class PalletController {
     /**
      * Retrieve all pallets saved in the database.
      *
-     * @return List of all pallets as a api response.
+     * @return List of all pallets as an api response.
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllPallets() {
@@ -50,11 +50,11 @@ public class PalletController {
     }
 
     /**
-     * Retrieve alla pallets between two dates in the database.
+     * Retrieve all pallets between two dates in the database.
      *
      * @param startDate Date to search from.
      * @param endDate   Date to search to.
-     * @return List of all pallets as a api response.
+     * @return List of all pallets as an api response.
      */
     @RequestMapping(params = {"startDate", "endDate"}, method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
@@ -71,7 +71,7 @@ public class PalletController {
      * Retrieve all pallets which are blocked or not.
      *
      * @param isBlocked Blocked status.
-     * @return List of all pallets as a api response.
+     * @return List of all pallets as an api response.
      */
     @RequestMapping(params = "isBlocked", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked) {
@@ -85,10 +85,10 @@ public class PalletController {
     }
 
     /**
-     * Retrieve all pallets which has been delivered to a costumer.
+     * Retrieve all pallets which have been delivered to a customer.
      *
      * @param id ID of the customer.
-     * @return List of all pallets as a api response.
+     * @return List of all pallets as an api response.
      */
     @RequestMapping(params = "customerId", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@RequestParam("customerId") String id) {
@@ -104,7 +104,7 @@ public class PalletController {
      * Retrieve a single pallet, identified by it's id.
      *
      * @param id ID of the pallet.
-     * @return List of all pallets as a api response.
+     * @return List of all pallets as an api response.
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletById(@PathVariable("id") String id) {

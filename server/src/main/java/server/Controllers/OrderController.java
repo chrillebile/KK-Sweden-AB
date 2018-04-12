@@ -32,7 +32,7 @@ public class OrderController {
     /**
      * Getting all orders.
      *
-     * @return The list of all orders as a api response.
+     * @return The list of all orders as an api response.
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllOrders() {

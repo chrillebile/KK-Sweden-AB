@@ -32,7 +32,7 @@ public class RawMaterialController {
     /**
      * Retrieve all raw materials.
      *
-     * @return List of all raw materials as a api response.
+     * @return List of all raw materials as an api response.
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllMaterials() {
