@@ -15,6 +15,11 @@ import java.util.List;
 @Repository
 public class OrderRepository extends server.Repositories.Repository {
 
+    /**
+     * Retrieve all orders found in the database.
+     *
+     * @return List of all orders.
+     */
     public List<Order> getAllOrders() {
         String query = "SELECT * FROM orders";
 

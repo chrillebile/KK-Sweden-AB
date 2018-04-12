@@ -15,6 +15,9 @@ import server.Resources.RawMaterialResource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for Raw Material.
+ */
 @RestController
 @RequestMapping(value = "/rawMaterials")
 public class RawMaterialController {
@@ -26,6 +29,11 @@ public class RawMaterialController {
         this.rawMaterialRepository = rawMaterialRepository;
     }
 
+    /**
+     * Retrieve all raw materials.
+     *
+     * @return List of all raw materials as a api response.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllMaterials() {
         List<RawMaterial> rawMaterialList = rawMaterialRepository.getAllRawMaterial();
@@ -36,6 +44,12 @@ public class RawMaterialController {
         return new ResponseEntity<>(new DataResponse(rawMaterialResourceList), HttpStatus.OK);
     }
 
+    /**
+     * Retrieve a given raw material.
+     *
+     * @param id Raw material ID.
+     * @return Given raw material.
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> findMaterialById(@PathVariable("id") String id) {
         RawMaterial rawMaterial = rawMaterialRepository.getRawMaterial(Integer.parseInt(id));

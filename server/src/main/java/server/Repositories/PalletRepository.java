@@ -74,6 +74,12 @@ public class PalletRepository extends server.Repositories.Repository {
         return palletList;
     }
 
+    /**
+     * Retrieve pallets which is either blocked or not.
+     *
+     * @param isBlocked Status of blockage.
+     * @return The found pallets.
+     */
     public List<Pallet> getPallets(boolean isBlocked) {
         String query = "SELECT * FROM pallets WHERE isBlocked = ?";
         List<Pallet> palletList = new ArrayList<>();
@@ -86,6 +92,12 @@ public class PalletRepository extends server.Repositories.Repository {
         return palletList;
     }
 
+    /**
+     * Retrieve pallets found in the database from a given customer ID.
+     *
+     * @param id Customer ID.
+     * @return The found pallets.
+     */
     public List<Pallet> getPallets(Integer id) {
         String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE orders.customerId = ?";
         List<Pallet> palletList = new ArrayList<>();
@@ -136,6 +148,13 @@ public class PalletRepository extends server.Repositories.Repository {
         return pallet;
     }
 
+    /**
+     * Execute the query and listing the result.
+     *
+     * @param ps         The query as a prepared statement.
+     * @param palletList List that will be used for adding elements to.
+     * @throws SQLException Throws something goes wrong with the query.
+     */
     private void parseResults(PreparedStatement ps, List<Pallet> palletList) throws SQLException {
         ResultSet rs = ps.executeQuery();
         // next() returns true if there were more rows found

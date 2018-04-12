@@ -14,10 +14,14 @@ import server.Resources.OrderResource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for orders.
+ */
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderController {
 
+    // The repository for orders.
     private final OrderRepository orderRepository;
 
     @Autowired
@@ -25,6 +29,11 @@ public class OrderController {
         this.orderRepository = orderRepository;
     }
 
+    /**
+     * Getting all orders.
+     *
+     * @return The list of all orders as a api response.
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllOrders() {
         List<Order> orderList = orderRepository.getAllOrders();

@@ -10,9 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * The repository for accessing data from recipe.
+ */
 @Repository
 public class RecipeRepository extends server.Repositories.Repository {
 
+    /**
+     * Retrieve all recipes found in the database.
+     *
+     * @return List of all recipes.
+     */
     public List<Recipe> getRecipes() {
         String query = "SELECT * FROM recipes";
 
@@ -30,6 +38,12 @@ public class RecipeRepository extends server.Repositories.Repository {
         return recipes;
     }
 
+    /**
+     * Retrieve a given recipe.
+     *
+     * @param id Given recipe ID.
+     * @return Given recipe.
+     */
     public Recipe getRecipe(Integer id) {
         String query = "SELECT * FROM recipes WHERE id=?";
 

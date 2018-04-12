@@ -16,6 +16,11 @@ import java.util.NoSuchElementException;
 @Repository
 public class RawMaterialRepository extends server.Repositories.Repository {
 
+    /**
+     * Retrieve all raw materials found in the database.
+     *
+     * @return List of all raw materials.
+     */
     public List<RawMaterial> getAllRawMaterial() {
         String query = "SELECT * FROM rawMaterials";
 
@@ -34,6 +39,12 @@ public class RawMaterialRepository extends server.Repositories.Repository {
         return rawMaterial;
     }
 
+    /**
+     * Retrieve a given raw material found in the database.
+     *
+     * @param id Given raw material ID.
+     * @return Given raw material.
+     */
     public RawMaterial getRawMaterial(int id) {
         String query = "SELECT * FROM rawMaterials WHERE id=?";
 
