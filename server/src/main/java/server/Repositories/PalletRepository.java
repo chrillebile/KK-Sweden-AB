@@ -24,12 +24,11 @@ public class PalletRepository extends server.Repositories.Repository {
      */
     public Pallet getPallet(Integer id) {
         String query = "SELECT * FROM pallets WHERE id=?";
-
         Pallet pallet = null;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
-            List<Pallet> palletList = new ArrayList<>();
-            this.parseResults(ps, palletList);
+            List<Pallet> palletList;
+            palletList = this.parseResults(ps);
             pallet = palletList.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,7 +46,7 @@ public class PalletRepository extends server.Repositories.Repository {
         String query = "SELECT * FROM pallets";
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            this.parseResults(ps, palletList);
+            palletList = this.parseResults(ps);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,7 +66,7 @@ public class PalletRepository extends server.Repositories.Repository {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, String.valueOf(startDate));
             ps.setString(2, String.valueOf(endDate));
-            this.parseResults(ps, palletList);
+            palletList = this.parseResults(ps);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,7 +84,7 @@ public class PalletRepository extends server.Repositories.Repository {
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, isBlocked);
-            this.parseResults(ps, palletList);
+            palletList = this.parseResults(ps);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,7 +102,7 @@ public class PalletRepository extends server.Repositories.Repository {
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
-            this.parseResults(ps, palletList);
+            palletList = this.parseResults(ps);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -152,11 +151,11 @@ public class PalletRepository extends server.Repositories.Repository {
      * Execute the query and listing the result.
      *
      * @param ps         The query as a prepared statement.
-     * @param palletList List that will be used for adding elements to.
      * @throws SQLException Throws something goes wrong with the query.
      */
-    private void parseResults(PreparedStatement ps, List<Pallet> palletList) throws SQLException {
+    private List<Pallet> parseResults(PreparedStatement ps) throws SQLException {
         ResultSet rs = ps.executeQuery();
+        List<Pallet> palletList = new ArrayList<>();
         // next() returns true if there were more rows found
         while (rs.next()) {
             palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
@@ -167,5 +166,6 @@ public class PalletRepository extends server.Repositories.Repository {
         if (palletList.isEmpty()) {
             throw new NoSuchElementException("Elements not found");
         }
+        return palletList;
     }
 }
