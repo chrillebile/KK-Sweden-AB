@@ -1,6 +1,7 @@
 package server.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,7 @@ public class PalletController {
      * @return List of all pallets as an api response.
      */
     @RequestMapping(params = {"startDate", "endDate"}, method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+    public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDate, @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String endDate) {
         List<Pallet> palletList = palletRepository.getPallets(LocalDate.parse(startDate), LocalDate.parse(endDate));
         List<PalletResource> palletResources = new ArrayList<>();
         for (Pallet pallet : palletList) {
@@ -156,8 +157,7 @@ public class PalletController {
      * @throws RuntimeException
      */
     private void validatePost(Map body, List<String> notNullKeys) throws RuntimeException {
-        for (String value :
-                notNullKeys) {
+        for (String value : notNullKeys) {
             if (!body.containsKey(value) || body.get(value) == null) {
                 throw new IllegalArgumentException("Parameter " + value + " is either not present or null");
             }
