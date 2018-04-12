@@ -6,6 +6,7 @@ import server.Models.Pallet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -23,21 +24,12 @@ public class PalletRepository extends server.Repositories.Repository {
      */
     public Pallet getPallet(Integer id) {
         String query = "SELECT * FROM pallets WHERE id=?";
-
         Pallet pallet = null;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
-
-            ResultSet rs = ps.executeQuery();
-
-            // next() returns true if there were more rows found
-            if (rs.next()) {
-                pallet = new Pallet(rs.getInt("id"), rs.getInt("amount"),
-                        rs.getDate("productionDate").toLocalDate(), rs.getBoolean("isBlocked"),
-                        rs.getString("location"), rs.getTimestamp("deliveryTime"));
-            } else {
-                throw new NoSuchElementException("Element not found");
-            }
+            List<Pallet> palletList;
+            palletList = this.parseResults(ps);
+            pallet = palletList.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,26 +44,68 @@ public class PalletRepository extends server.Repositories.Repository {
      */
     public List<Pallet> getPallets() {
         String query = "SELECT * FROM pallets";
-
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ResultSet rs = ps.executeQuery();
-
-            // next() returns true if there were more rows found
-            while (rs.next()) {
-                palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
-                        rs.getDate("productionDate").toLocalDate(), rs.getBoolean("isBlocked"),
-                        rs.getString("location"), rs.getTimestamp("deliveryTime")));
-            }
-
-            // If it is empty, then throw an error
-            if (palletList.isEmpty()) {
-                throw new NoSuchElementException("Elements not found");
-            }
+            palletList = this.parseResults(ps);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return palletList;
+    }
 
+    /**
+     * Retrieve pallets between two dates found in the database.
+     *
+     * @param startDate Date to search from.
+     * @param endDate   Date to search to.
+     * @return The found pallets in a list.
+     */
+    public List<Pallet> getPallets(LocalDate startDate, LocalDate endDate) {
+        String query = "SELECT * FROM pallets WHERE productionDate BETWEEN ? AND ?";
+        List<Pallet> palletList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, String.valueOf(startDate));
+            ps.setString(2, String.valueOf(endDate));
+            palletList = this.parseResults(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return palletList;
+    }
+
+    /**
+     * Retrieve pallets which are either blocked or not.
+     *
+     * @param isBlocked Status of blockage.
+     * @return The found pallets.
+     */
+    public List<Pallet> getPallets(boolean isBlocked) {
+        String query = "SELECT * FROM pallets WHERE isBlocked = ?";
+        List<Pallet> palletList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setBoolean(1, isBlocked);
+            palletList = this.parseResults(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return palletList;
+    }
+
+    /**
+     * Retrieve pallets found in the database from a given customer ID.
+     *
+     * @param id Customer ID.
+     * @return The found pallets.
+     */
+    public List<Pallet> getPallets(Integer id) {
+        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE orders.customerId = ?";
+        List<Pallet> palletList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, id);
+            palletList = this.parseResults(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return palletList;
     }
 
@@ -111,5 +145,28 @@ public class PalletRepository extends server.Repositories.Repository {
             throw new Error("Could not create pallet. See error log for more information");
         }
         return pallet;
+    }
+
+    /**
+     * Execute the query and listing the result.
+     *
+     * @param ps The query as a prepared statement.
+     * @return Retrieved pallets from the database.
+     * @throws SQLException Throws something goes wrong with the query.
+     */
+    private List<Pallet> parseResults(PreparedStatement ps) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        List<Pallet> palletList = new ArrayList<>();
+        // next() returns true if there were more rows found
+        while (rs.next()) {
+            palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
+                    LocalDate.parse(rs.getString("productionDate")), rs.getBoolean("isBlocked"),
+                    rs.getString("location"), rs.getTimestamp("deliveryTime")));
+        }
+        // If it is empty, then throw an error
+        if (palletList.isEmpty()) {
+            throw new NoSuchElementException("Elements not found");
+        }
+        return palletList;
     }
 }

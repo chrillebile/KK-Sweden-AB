@@ -20,11 +20,11 @@ public class RawMaterial {
         this.lastDeliveryAmount = lastDeliveryAmount;
     }
 
-    public long getId(){
+    public long getId() {
         return id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 

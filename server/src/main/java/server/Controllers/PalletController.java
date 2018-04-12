@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller for pallet.
+ */
 @RestController
 @RequestMapping(value = "/pallets")
 public class PalletController {
@@ -31,9 +34,9 @@ public class PalletController {
     /**
      * Retrieve all pallets saved in the database.
      *
-     * @return
+     * @return List of all pallets as an api response.
      */
-    @RequestMapping(value = "")
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getAllPallets() {
         List<Pallet> palletList = palletRepository.getPallets();
 
@@ -47,12 +50,63 @@ public class PalletController {
     }
 
     /**
+     * Retrieve all pallets between two dates in the database.
+     *
+     * @param startDate Date to search from.
+     * @param endDate   Date to search to.
+     * @return List of all pallets as an api response.
+     */
+    @RequestMapping(params = {"startDate", "endDate"}, method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getPalletsBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        List<Pallet> palletList = palletRepository.getPallets(LocalDate.parse(startDate), LocalDate.parse(endDate));
+        List<PalletResource> palletResources = new ArrayList<>();
+        for (Pallet pallet : palletList) {
+            palletResources.add(new PalletResource(pallet));
+        }
+
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
+    /**
+     * Retrieve all pallets which are blocked or not.
+     *
+     * @param isBlocked Blocked status.
+     * @return List of all pallets as an api response.
+     */
+    @RequestMapping(params = "isBlocked", method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked) {
+        boolean blocked = isBlocked.equals("true");
+        List<Pallet> palletList = palletRepository.getPallets(blocked);
+        List<PalletResource> palletResources = new ArrayList<>();
+        for (Pallet pallet : palletList) {
+            palletResources.add(new PalletResource(pallet));
+        }
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
+    /**
+     * Retrieve all pallets which have been delivered to a customer.
+     *
+     * @param id ID of the customer.
+     * @return List of all pallets as an api response.
+     */
+    @RequestMapping(params = "customerId", method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@RequestParam("customerId") String id) {
+        List<Pallet> palletList = palletRepository.getPallets(Integer.parseInt(id));
+        List<PalletResource> palletResources = new ArrayList<>();
+        for (Pallet pallet : palletList) {
+            palletResources.add(new PalletResource(pallet));
+        }
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
+    /**
      * Retrieve a single pallet, identified by it's id.
      *
-     * @param id
-     * @return
+     * @param id ID of the pallet.
+     * @return List of all pallets as an api response.
      */
-    @RequestMapping(value = "/{id}")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletById(@PathVariable("id") String id) {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
 
@@ -65,7 +119,7 @@ public class PalletController {
      * @param body
      * @return
      */
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<DataResponse> createPallet(@Valid @RequestBody DataResponse body) {
         this.validatePost((Map) body.getData(), Arrays.asList("amount", "productionDate", "blocked", "recipeId", "orderId"));
 

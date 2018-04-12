@@ -14,6 +14,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     /**
      * Handles the exceptions of type Exceptions.
+     *
      * @param ex The exception caught.
      * @return The JSON representation of the exception. See @{@link APIException}
      */
@@ -26,8 +27,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         if (ex instanceof NoSuchElementException) {
             bodyOfResponse = "The item you were searching for was not found.";
             status = HttpStatus.NOT_FOUND;
-        }
-        else {
+        } else {
             bodyOfResponse = ex.getLocalizedMessage();
             status = HttpStatus.BAD_REQUEST;
         }

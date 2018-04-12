@@ -15,6 +15,9 @@ import server.Resources.RecipeResource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for recipe.
+ */
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
@@ -22,23 +25,34 @@ public class RecipeController {
     private final RecipeRepository recipeRepository;
 
     @Autowired
-    public RecipeController(RecipeRepository recipeRepository){
+    public RecipeController(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
 
+    /**
+     * Retrieve all recipes.
+     *
+     * @return List of all recipes as an api response.
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getAllRecipes(){
+    public ResponseEntity<DataResponse> getAllRecipes() {
         List<Recipe> recipeList = recipeRepository.getRecipes();
         List<RecipeResource> recipeResourceList = new ArrayList<>();
 
-        for(Recipe recipe : recipeList){
+        for (Recipe recipe : recipeList) {
             recipeResourceList.add(new RecipeResource(recipe));
         }
         return new ResponseEntity<>(new DataResponse(recipeRepository), HttpStatus.OK);
     }
 
+    /**
+     * Retrieve a given recipe.
+     *
+     * @param id ID of the recipe.
+     * @return Given recipe.
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<DataResponse> getRecipe(@PathVariable("id") String id){
+    public ResponseEntity<DataResponse> getRecipe(@PathVariable("id") String id) {
         Recipe recipe = recipeRepository.getRecipe(Integer.parseInt(id));
         RecipeResource recipeResource = new RecipeResource(recipe);
         return new ResponseEntity<>(new DataResponse(recipeResource), HttpStatus.OK);

@@ -10,18 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * The repository for accessing data from recipe.
+ */
 @Repository
-public class RecipeRepository extends server.Repositories.Repository{
+public class RecipeRepository extends server.Repositories.Repository {
 
-    public List<Recipe> getRecipes(){
+    /**
+     * Retrieve all recipes found in the database.
+     *
+     * @return List of all recipes.
+     */
+    public List<Recipe> getRecipes() {
         String query = "SELECT * FROM recipes";
 
         List<Recipe> recipes = null;
 
-        try(PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ResultSet rs = ps.executeQuery();
             recipes = new ArrayList<>();
-            while(rs.next()){
+            while (rs.next()) {
                 recipes.add(new Recipe(rs.getInt("id"), rs.getString("name")));
             }
         } catch (SQLException e) {
@@ -30,18 +38,24 @@ public class RecipeRepository extends server.Repositories.Repository{
         return recipes;
     }
 
-    public Recipe getRecipe(Integer id){
+    /**
+     * Retrieve a given recipe.
+     *
+     * @param id Given recipe ID.
+     * @return Given recipe.
+     */
+    public Recipe getRecipe(Integer id) {
         String query = "SELECT * FROM recipes WHERE id=?";
 
         Recipe recipe = null;
-        try(PreparedStatement ps = connection.prepareStatement(query)){
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()){
+            if (rs.next()) {
                 recipe = new Recipe(rs.getInt("id"), rs.getString("name"));
-            }else {
+            } else {
                 throw new NoSuchElementException("Element not found");
             }
         } catch (SQLException e) {
