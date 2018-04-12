@@ -150,7 +150,8 @@ public class PalletRepository extends server.Repositories.Repository {
     /**
      * Execute the query and listing the result.
      *
-     * @param ps         The query as a prepared statement.
+     * @param ps The query as a prepared statement.
+     * @return Retrieved pallets from the database.
      * @throws SQLException Throws something goes wrong with the query.
      */
     private List<Pallet> parseResults(PreparedStatement ps) throws SQLException {
