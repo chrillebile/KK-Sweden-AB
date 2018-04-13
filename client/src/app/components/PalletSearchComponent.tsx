@@ -10,7 +10,9 @@ interface Props {
 interface State {
   formState: {
     blocked: boolean,
-    customerId: number | string
+    customerId: number | string,
+    fromDate: string,
+    toDate: string
   }
 }
 
@@ -21,7 +23,9 @@ export class PalletSearchComponent extends React.Component<Props, State> {
     this.state = {
       formState: {
         blocked: false,
-        customerId: ''
+        customerId: '',
+        fromDate: '',
+        toDate: ''
       }
     };
   }
@@ -49,8 +53,22 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div>
           <label>
             Search by timestamp:
-            <input type="text"/>
-            <button>Search</button>
+            <input
+              type="date"
+              onChange={this.handleFromDateChange}
+              min="1970-01-01"
+              max={this.state.formState.toDate}
+              value={this.state.formState.fromDate}
+              required
+            />
+            <input
+              type="date"
+              onChange={this.handleToDateChange}
+              min={this.state.formState.fromDate}
+              value={this.state.formState.toDate}
+              required
+            />
+            <button onClick={this.handleTimeSpanSearch}>Search</button>
           </label>
         </div>
         <div>
@@ -95,6 +113,18 @@ export class PalletSearchComponent extends React.Component<Props, State> {
     });
   };
 
+  handleFromDateChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({
+      formState: Object.assign({}, this.state.formState, { fromDate: event.target.value })
+    });
+  };
+
+  handleToDateChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({
+      formState: Object.assign({}, this.state.formState, { toDate: event.target.value })
+    });
+  };
+
   /**
    * Handle clicking on search by id.
    * @param {React.MouseEvent<HTMLButtonElement>} e
@@ -117,6 +147,14 @@ export class PalletSearchComponent extends React.Component<Props, State> {
    */
   handleCustomerIdSearch = () => {
     this.props.actions.getPalletsByCustomerId(parseInt(this.state.formState.customerId as string));
+  };
+
+  /**
+   * Handle clicking on search by customer id.
+   * @param {React.MouseEvent<HTMLButtonElement>} e
+   */
+  handleTimeSpanSearch = () => {
+    this.props.actions.getPalletsByTimespan(this.state.formState.fromDate, this.state.formState.toDate);
   };
 }
 

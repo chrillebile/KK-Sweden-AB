@@ -113,6 +113,25 @@ export namespace PalletActions {
     };
   }
 
+  /**
+   * Action to get pallets that have been produced between a timespan.
+   * @param fromDate Date to search from. Must be in yyyy-MM-dd format.
+   * @param toDate Date to search to. Must be in yyyy-MM-dd format.
+   * @returns {any}
+   */
+  export function getPalletsByTimespan(fromDate: string, toDate: string): any {
+    return (dispatch: Dispatch<RootState>) => {
+      dispatch(getPalletsRequest());
+      axios.get(APIConfig.url + '/pallets?startDate=' + fromDate + '&endDate=' + toDate).then((response) => {
+        dispatch(getPalletsSuccess(response.data));
+      })
+        .catch((error) => {
+          console.log('API failure when retrieving pallets based on blocked status');
+          console.log(error);
+        });
+    };
+  }
+
   function getPalletsSuccess(payload: object | null) {
     return {
       type: Type.GET_PALLETS_SUCCESS,
