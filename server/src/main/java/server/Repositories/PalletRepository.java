@@ -147,7 +147,7 @@ public class PalletRepository extends server.Repositories.Repository {
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
         String query = "INSERT INTO pallets (amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        Pallet pallet = null;
+        Pallet pallet;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             connection.setAutoCommit(false);
             ps.setInt(1, palletToBeCreated.getAmount());
@@ -170,6 +170,28 @@ public class PalletRepository extends server.Repositories.Repository {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Error("Could not create pallet. See error log for more information");
+        }
+        return pallet;
+    }
+
+    /**
+     * Update block status.
+     *
+     * @param id        Pallet ID.
+     * @param isBlocked New block status.
+     * @return Changed pallet.
+     */
+    public Pallet updatePalletBlockStatus(int id, boolean isBlocked) {
+        String query = "UPDATE pallets SET isBlocked = ? WHERE id = ?";
+        Pallet pallet;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setBoolean(1, isBlocked);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            pallet = getPallet(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new Error("Could not update pallet. See error log for more information.");
         }
         return pallet;
     }

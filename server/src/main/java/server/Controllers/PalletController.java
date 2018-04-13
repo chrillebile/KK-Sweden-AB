@@ -42,8 +42,7 @@ public class PalletController {
         List<Pallet> palletList = palletRepository.getPallets();
 
         List<PalletResource> palletResources = new ArrayList<>();
-        for (Pallet pallet :
-                palletList) {
+        for (Pallet pallet : palletList) {
             palletResources.add(new PalletResource(pallet));
         }
 
@@ -127,6 +126,21 @@ public class PalletController {
     public ResponseEntity<DataResponse> getPalletById(@PathVariable("id") String id) {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
 
+        return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);
+    }
+
+
+    /**
+     * Update the blocked status for pallets.
+     *
+     * @param body What to change.
+     * @return The changed pallet.
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<DataResponse> updatePalletBlockStatus(@PathVariable("id") String id, @Valid @RequestBody DataResponse body) {
+        this.validatePost((Map) body.getData(), Arrays.asList("isBlocked"));
+        boolean blocked = ((Map) body.getData()).get("isBlocked").toString().equals("true");
+        Pallet pallet = palletRepository.updatePalletBlockStatus(Integer.parseInt(id), blocked);
         return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);
     }
 
