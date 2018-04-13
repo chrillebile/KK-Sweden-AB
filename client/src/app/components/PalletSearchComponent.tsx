@@ -41,7 +41,11 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div>
           <label>
             Search by id:
-            <input type="text" ref="searchByIdTbx"/>
+            <input
+              type="text"
+              ref="searchByIdTbx"
+              placeholder="Enter id of pallet"
+            />
           </label>
           <button onClick={this.handleIdSearch}>Search</button>
         </div>

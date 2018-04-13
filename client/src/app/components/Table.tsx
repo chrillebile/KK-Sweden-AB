@@ -14,9 +14,9 @@ export class Table extends React.Component<Props> {
         <tr>
           <th>Id</th>
           <th>Amount</th>
-          <th>ProductionDate</th>
+          <th>Production Date</th>
           <th>Location</th>
-          <th>DeliveryTime</th>
+          <th>Delivery Time</th>
           <th>Blocked</th>
         </tr>
         </thead>
@@ -28,8 +28,8 @@ export class Table extends React.Component<Props> {
               <td>{row.amount}</td>
               <td>{row.productionDate}</td>
               <td>{row.location}</td>
-              <td>{row.deliveryTime}</td>
-              <td>{row.blocked}</td>
+              <td>{row.deliveryTime ? row.deliveryTime : 'None'}</td>
+              <td>{row.blocked ? 'Yes' : 'No'}</td>
             </tr>
           );
         })}
