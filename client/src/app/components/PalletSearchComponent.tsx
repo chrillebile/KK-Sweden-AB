@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PalletActions } from 'app/actions/palletActions';
+import { ChangeEvent } from 'react';
 
 interface Props {
   resetPalletView: any,
@@ -7,9 +8,22 @@ interface Props {
 }
 
 interface State {
+  formState: {
+    blocked: boolean,
+  }
 }
 
 export class PalletSearchComponent extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      formState: {
+        blocked: false
+      }
+    };
+  }
+
   render() {
     return (
       <div>
@@ -47,13 +61,26 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div>
           <label>
             Search for blocked pallets:
-            <input type="text"/>
-            <button>Search</button>
+            <label>
+              <input
+                type="checkbox"
+                onChange={this.handleBlockedChange}
+                checked={this.state.formState.blocked}
+              />
+              IsBlocked
+            </label>
+            <button onClick={this.handleBlockedSearch}>Search</button>
           </label>
         </div>
       </div>
     );
   }
+
+  handleBlockedChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({
+      formState: Object.assign({}, this.state.formState, { blocked: event.target.checked })
+    });
+  };
 
   /**
    * Handle clicking on search by id.
@@ -61,6 +88,14 @@ export class PalletSearchComponent extends React.Component<Props, State> {
    */
   handleIdSearch = () => {
     this.props.actions.getPalletById(parseInt((this.refs.searchByIdTbx as HTMLInputElement).value));
+  };
+
+  /**
+   * Handle clicking on search by blocked status.
+   * @param {React.MouseEvent<HTMLButtonElement>} e
+   */
+  handleBlockedSearch = () => {
+    this.props.actions.getPalletByBlockedStatus(this.state.formState.blocked);
   };
 }
 
