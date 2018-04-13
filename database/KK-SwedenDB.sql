@@ -86,8 +86,8 @@ INSERT into recipes (id, name) VALUES
 INSERT INTO pallets 
 (id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)
 VALUES
-(1, 15, 2017-01-08, 0, "Lund", null, 2, 1),
-(2, 10, 2017-01-08, 0, "Lund", null, 3, 1);
+(1, 15, "2017-01-08", 0, "Lund", null, 2, 1),
+(2, 10, "2017-01-08", 0, "Lund", null, 3, 1);
 
 INSERT INTO rawMaterials (id, name, amount, unit, lastDeliveryAmount, lastDeliveryTime) VALUES
 (1, "Mjöl", 2300, 'kg', 0, null),

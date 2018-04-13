@@ -8,11 +8,14 @@ import Header from 'Containers/Header';
 import { RecipeActions } from 'app/actions/recipeActions';
 import PalletModel from 'Models/PalletModel';
 import { PalletActions } from 'app/actions';
+import { OrderActions } from 'app/actions/orderActions';
 
 interface Props {
   recipeActions: RecipeActions,
-  palletActions: PalletActions
-  recipes: RootState.RecipeState
+  palletActions: PalletActions,
+  orderActions: OrderActions,
+  recipes: RootState.RecipeState,
+  orders: RootState.OrderState
 }
 
 interface State {
@@ -28,11 +31,13 @@ interface State {
 
 @connect((state: RootState) => {
   return {
-    recipes: state.recipes
+    recipes: state.recipes,
+    orders: state.orders
   };
 }, (dispatch: Dispatch<RootState>) => ({
   recipeActions: bindActionCreators(omit(RecipeActions, 'Type'), dispatch),
   palletActions: bindActionCreators(omit(PalletActions, 'Type'), dispatch),
+  orderActions: bindActionCreators(omit(OrderActions, 'Type'), dispatch),
 }))
 
 export class PalletCreate extends React.Component<Props, State> {
@@ -53,6 +58,7 @@ export class PalletCreate extends React.Component<Props, State> {
 
   componentWillMount() {
     this.props.recipeActions.getRecipes();
+    this.props.orderActions.getOrders();
   }
 
   render() {
@@ -120,8 +126,12 @@ export class PalletCreate extends React.Component<Props, State> {
             <label>
               Order:
               <select onChange={this.handleOrderChange}>
-                <option disabled selected>--Choose a recipe--</option>
-                <option value="1">Order 1</option>
+                <option disabled selected>--Choose an option--</option>
+                {this.props.orders.orderItems.map(orders => {
+                  return (
+                    <option value={orders.id} key={orders.id}>{orders.id}</option>
+                  );
+                })}
               </select>
             </label>
           </div>

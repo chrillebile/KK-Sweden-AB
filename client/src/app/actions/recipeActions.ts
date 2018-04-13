@@ -1,5 +1,7 @@
 import { Dispatch } from 'redux';
 import { RootState } from 'app/reducers';
+import axios from 'axios';
+import { APIConfig } from 'app/config';
 
 
 export namespace RecipeActions {
@@ -16,18 +18,13 @@ export namespace RecipeActions {
   export function getRecipes() {
     return (dispatch: Dispatch<RootState>) => {
       dispatch(getRecipesRequest());
-      dispatch(getRecipesSuccess({
-        "data": [
-          {
-            "id": 1,
-            "name": "Choklad Kakor"
-          },
-          {
-            "id": 2,
-            "name": "Vanilj Kakor"
-          }
-        ]
-      }))
+      axios.get(APIConfig.url + '/recipes').then((response) => {
+        dispatch(getRecipesSuccess(response.data));
+      })
+        .catch((error) => {
+          console.log('API failure: retrieving recipes');
+          console.log(error);
+        });
     };
   }
 

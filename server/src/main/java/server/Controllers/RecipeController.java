@@ -42,7 +42,7 @@ public class RecipeController {
         for (Recipe recipe : recipeList) {
             recipeResourceList.add(new RecipeResource(recipe));
         }
-        return new ResponseEntity<>(new DataResponse(recipeRepository), HttpStatus.OK);
+        return new ResponseEntity<>(new DataResponse(recipeResourceList), HttpStatus.OK);
     }
 
     /**

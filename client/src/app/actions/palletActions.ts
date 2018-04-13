@@ -52,9 +52,10 @@ export namespace PalletActions {
     };
   }
 
-  export function createPallet(pallet : PalletModel, recipeId : number, orderId : number) {
+  export function createPallet(pallet: PalletModel, recipeId: number, orderId: number) {
     return (dispatch: Dispatch<RootState>) => {
-      if (pallet.deliveryTime && typeof pallet.deliveryTime ) {}
+      if (pallet.deliveryTime && typeof pallet.deliveryTime) {
+      }
 
       dispatch(createPalletRequest());
       axios.post(APIConfig.url + '/pallets', {
@@ -72,8 +73,26 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log(error);
-        })
-    }
+        });
+    };
+  }
+
+  /**
+   * Action to get pallets that have a blocked status.
+   * @param {number} blockedPallets Whether to search for blocked or unblocked pallets.
+   * @returns {any}
+   */
+  export function getPalletByBlockedStatus(blockedPallets: boolean): any {
+    return (dispatch: Dispatch<RootState>) => {
+      dispatch(getPalletsRequest());
+      axios.get(APIConfig.url + '/pallets?isBlocked=' + blockedPallets).then((response) => {
+        dispatch(getPalletsSuccess(response.data));
+      })
+        .catch((error) => {
+          console.log('API failure when retrieving pallets based on blocked status');
+          console.log(error);
+        });
+    };
   }
 
   function getPalletsSuccess(payload: object | null) {
@@ -96,13 +115,13 @@ export namespace PalletActions {
   function createPalletRequest() {
     return {
       type: Type.CREATE_PALLET_REQUEST
-    }
+    };
   }
 
   function createPalletSuccess() {
     return {
       type: Type.CREATE_PALLET_SUCCESS
-    }
+    };
   }
 }
 
