@@ -122,7 +122,10 @@ public class PalletRepository extends server.Repositories.Repository {
      * @return The found pallets.
      */
     public List<Pallet> getPalletsByBlockStatus(Integer id) {
-        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE orders.customerId = ?";
+        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId " +
+                "FROM pallets " +
+                "JOIN orders ON orders.id = pallets.orderId " +
+                "WHERE orders.customerId = ? AND pallets.deliveryTime < CURRENT_TIMESTAMP";
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
