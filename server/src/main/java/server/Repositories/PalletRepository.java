@@ -29,6 +29,12 @@ public class PalletRepository extends server.Repositories.Repository {
             ps.setInt(1, id);
             List<Pallet> palletList;
             palletList = this.parseResults(ps);
+
+            // If it is empty, then throw an error
+            if (palletList.isEmpty()) {
+                throw new NoSuchElementException("Elements not found");
+            }
+
             pallet = palletList.get(0);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,10 +169,7 @@ public class PalletRepository extends server.Repositories.Repository {
                     LocalDate.parse(rs.getString("productionDate")), rs.getBoolean("isBlocked"),
                     rs.getString("location"), rs.getTimestamp("deliveryTime")));
         }
-        // If it is empty, then throw an error
-        if (palletList.isEmpty()) {
-            throw new NoSuchElementException("Elements not found");
-        }
+
         return palletList;
     }
 }
