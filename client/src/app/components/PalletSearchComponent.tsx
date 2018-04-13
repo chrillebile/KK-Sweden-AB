@@ -12,7 +12,8 @@ interface State {
     blocked: boolean,
     customerId: number | string,
     fromDate: string,
-    toDate: string
+    toDate: string,
+    productId: number | string
   }
 }
 
@@ -25,7 +26,8 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         blocked: false,
         customerId: '',
         fromDate: '',
-        toDate: ''
+        toDate: '',
+        productId: ''
       }
     };
   }
@@ -46,8 +48,13 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div>
           <label>
             Search by product:
-            <input type="text" ref="searchByProductTbx"/>
-            <button>Search</button>
+            <input
+              type="text"
+              onChange={this.handleProductIdChange}
+              value={this.state.formState.productId}
+              placeholder="Enter id of product"
+            />
+            <button onClick={this.handleProductIdSearch}>Search</button>
           </label>
         </div>
         <div>
@@ -125,6 +132,12 @@ export class PalletSearchComponent extends React.Component<Props, State> {
     });
   };
 
+  handleProductIdChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({
+      formState: Object.assign({}, this.state.formState, { productId: event.target.value })
+    });
+  };
+
   /**
    * Handle clicking on search by id.
    * @param {React.MouseEvent<HTMLButtonElement>} e
@@ -155,6 +168,14 @@ export class PalletSearchComponent extends React.Component<Props, State> {
    */
   handleTimeSpanSearch = () => {
     this.props.actions.getPalletsByTimespan(this.state.formState.fromDate, this.state.formState.toDate);
+  };
+
+  /**
+   * Handle clicking on search by product id.
+   * @param {React.MouseEvent<HTMLButtonElement>} e
+   */
+  handleProductIdSearch = () => {
+    this.props.actions.getPalletsByProductId(parseInt(this.state.formState.productId as string));
   };
 }
 

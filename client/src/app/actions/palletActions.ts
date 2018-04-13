@@ -107,7 +107,7 @@ export namespace PalletActions {
         dispatch(getPalletsSuccess(response.data));
       })
         .catch((error) => {
-          console.log('API failure when retrieving pallets based on blocked status');
+          console.log('API failure when retrieving pallets based on customerId');
           console.log(error);
         });
     };
@@ -126,7 +126,25 @@ export namespace PalletActions {
         dispatch(getPalletsSuccess(response.data));
       })
         .catch((error) => {
-          console.log('API failure when retrieving pallets based on blocked status');
+          console.log('API failure when retrieving pallets based on timestamp');
+          console.log(error);
+        });
+    };
+  }
+
+  /**
+   * Action to get pallets that contain a specific product.
+   * @param productId
+   * @returns {any}
+   */
+  export function getPalletsByProductId(productId: number): any {
+    return (dispatch: Dispatch<RootState>) => {
+      dispatch(getPalletsRequest());
+      axios.get(APIConfig.url + '/pallets?recipeId=' + productId).then((response) => {
+        dispatch(getPalletsSuccess(response.data));
+      })
+        .catch((error) => {
+          console.log('API failure when retrieving pallets based on product id');
           console.log(error);
         });
     };
