@@ -94,10 +94,28 @@ public class PalletRepository extends server.Repositories.Repository {
     /**
      * Retrieve pallets found in the database from a given customer ID.
      *
-     * @param id Customer ID.
+     * @param id Recipe ID.
      * @return The found pallets.
      */
     public List<Pallet> getPallets(Integer id) {
+        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN recipes ON recipes.id = pallets.recipeId WHERE pallets.recipeId = ?";
+        List<Pallet> palletList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, id);
+            palletList = this.parseResults(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return palletList;
+    }
+
+    /**
+     * Retrieve pallets found in the database from a given customer ID.
+     *
+     * @param id Customer ID.
+     * @return The found pallets.
+     */
+    public List<Pallet> getPalletsByBlockStatus(Integer id) {
         String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN orders ON orders.id = pallets.orderId WHERE orders.customerId = ?";
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {

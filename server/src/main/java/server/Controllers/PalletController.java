@@ -86,6 +86,22 @@ public class PalletController {
     }
 
     /**
+     * Retrieve all pallets with a given recipe.
+     *
+     * @param id Recipe ID.
+     * @return List of all pallets as an api response.
+     */
+    @RequestMapping(params = "recipeId", method = RequestMethod.GET)
+    public ResponseEntity<DataResponse> getPalletsByRecipeId(@RequestParam("recipeId") String id) {
+        List<Pallet> palletList = palletRepository.getPallets(Integer.parseInt(id));
+        List<PalletResource> palletResources = new ArrayList<>();
+        for (Pallet pallet : palletList) {
+            palletResources.add(new PalletResource(pallet));
+        }
+        return new ResponseEntity<>(new DataResponse(palletResources), HttpStatus.OK);
+    }
+
+    /**
      * Retrieve all pallets which have been delivered to a customer.
      *
      * @param id ID of the customer.
@@ -93,7 +109,7 @@ public class PalletController {
      */
     @RequestMapping(params = "customerId", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getDeliveredPalletsForCustomer(@RequestParam("customerId") String id) {
-        List<Pallet> palletList = palletRepository.getPallets(Integer.parseInt(id));
+        List<Pallet> palletList = palletRepository.getPalletsByBlockStatus(Integer.parseInt(id));
         List<PalletResource> palletResources = new ArrayList<>();
         for (Pallet pallet : palletList) {
             palletResources.add(new PalletResource(pallet));
