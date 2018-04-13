@@ -10,6 +10,7 @@ interface Props {
 interface State {
   formState: {
     blocked: boolean,
+    customerId: number | string
   }
 }
 
@@ -19,7 +20,8 @@ export class PalletSearchComponent extends React.Component<Props, State> {
 
     this.state = {
       formState: {
-        blocked: false
+        blocked: false,
+        customerId: ''
       }
     };
   }
@@ -54,8 +56,13 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div>
           <label>
             Search by delivery to customer:
-            <input type="text"/>
-            <button>Search</button>
+            <input
+              type="text"
+              onChange={this.handleCustomerIdChange}
+              placeholder="Enter id of customer"
+              value={this.state.formState.customerId}
+            />
+            <button onClick={this.handleCustomerIdSearch}>Search</button>
           </label>
         </div>
         <div>
@@ -82,6 +89,12 @@ export class PalletSearchComponent extends React.Component<Props, State> {
     });
   };
 
+  handleCustomerIdChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({
+      formState: Object.assign({}, this.state.formState, { customerId: event.target.value })
+    });
+  };
+
   /**
    * Handle clicking on search by id.
    * @param {React.MouseEvent<HTMLButtonElement>} e
@@ -96,6 +109,14 @@ export class PalletSearchComponent extends React.Component<Props, State> {
    */
   handleBlockedSearch = () => {
     this.props.actions.getPalletByBlockedStatus(this.state.formState.blocked);
+  };
+
+  /**
+   * Handle clicking on search by customer id.
+   * @param {React.MouseEvent<HTMLButtonElement>} e
+   */
+  handleCustomerIdSearch = () => {
+    this.props.actions.getPalletsByCustomerId(parseInt(this.state.formState.customerId as string));
   };
 }
 

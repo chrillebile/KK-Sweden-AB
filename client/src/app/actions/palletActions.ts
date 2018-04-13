@@ -95,6 +95,24 @@ export namespace PalletActions {
     };
   }
 
+  /**
+   * Action to get pallets that have been delivered to a customer.
+   * @param customerId Id of the customer.
+   * @returns {any}
+   */
+  export function getPalletsByCustomerId(customerId: number): any {
+    return (dispatch: Dispatch<RootState>) => {
+      dispatch(getPalletsRequest());
+      axios.get(APIConfig.url + '/pallets?customerId=' + customerId).then((response) => {
+        dispatch(getPalletsSuccess(response.data));
+      })
+        .catch((error) => {
+          console.log('API failure when retrieving pallets based on blocked status');
+          console.log(error);
+        });
+    };
+  }
+
   function getPalletsSuccess(payload: object | null) {
     return {
       type: Type.GET_PALLETS_SUCCESS,
