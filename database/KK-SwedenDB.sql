@@ -26,7 +26,7 @@ CREATE TABLE recipes(
 DROP TABLE IF EXISTS pallets;
 CREATE TABLE pallets(
     id INTEGER,
-    amount INTEGER,
+    amount INTEGER CHECK(amount >= 0),
     productionDate DATE,
     isBlocked BOOLEAN,
     location TEXT,
@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS rawMaterials;
 CREATE TABLE rawMaterials(
     id INTEGER,
     name TEXT,
-    amount INTEGER,
+    amount INTEGER CHECK(amount >= 0),
     unit TEXT,
     lastDeliveryAmount INTEGER,
     lastDeliveryTime DATE,
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS recipeIngredients;
 CREATE TABLE recipeIngredients(
     recipeId INTEGER,
     rawMaterialId INTEGER,
-    amount INTEGER,
+    amount INTEGER CHECK(amount >= 0),
     FOREIGN KEY (recipeId) REFERENCES recipes(id),
     FOREIGN KEY (rawMaterialId) REFERENCES rawMaterials(id),
     PRIMARY KEY (recipeId, rawMaterialId)
@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS orderRecipeAmount;
 CREATE TABLE orderRecipeAmount(
     orderId INTEGER,
     recipeId INTEGER,
-    amount INTEGER,
+    amount INTEGER CHECK(amount >= 0),
     FOREIGN KEY (orderId) REFERENCES orders(id),
     FOREIGN KEY (recipeId) REFERENCES recipes(id),
     PRIMARY KEY (orderId, recipeId)
