@@ -69,6 +69,22 @@ CREATE TABLE orderRecipeAmount(
     PRIMARY KEY (orderId, recipeId)
 );
 
+DROP TRIGGER IF EXISTS updateRawMaterialAmountOnInsert;
+CREATE TRIGGER updateRawMaterialAmountOnInsert 
+BEFORE INSERT ON pallets
+BEGIN
+    update rawMaterials
+    set amount = amount - 360 * (
+        select (recipeIngredients.amount) from recipeIngredients --Get amount for one ingredient.
+        where NEW.recipeId = recipeIngredients.recipeId
+    )
+    where rawMaterials.id = (
+        select (rawMaterialId) from recipeIngredients --Get id for ingredients in the recigpe.
+        join rawMaterials
+        on recipeIngredients.rawMaterialId = rawMaterials.id
+    );
+END;
+
 PRAGMA foreign_keys=ON;
 INSERT INTO customers (id, name, address) VALUES
 (1, "Johan Andersson", "Magistratsvägen"),
