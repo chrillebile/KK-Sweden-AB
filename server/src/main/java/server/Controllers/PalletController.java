@@ -129,9 +129,8 @@ public class PalletController {
         return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);
     }
 
-
     /**
-     * Update the blocked status for pallets.
+     * Update the blocked status for a given pallet.
      *
      * @param body What to change.
      * @return The changed pallet.
@@ -142,6 +141,25 @@ public class PalletController {
         boolean blocked = ((Map) body.getData()).get("isBlocked").toString().equals("true");
         Pallet pallet = palletRepository.updatePalletBlockStatus(Integer.parseInt(id), blocked);
         return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);
+    }
+
+    /**
+     * Update the block status for pallets.
+     *
+     * @param startDate Date to search from.
+     * @param endDate   Date to search to.
+     * @param body      Block status and recipe ID.
+     * @return The changed pallets.
+     */
+    @RequestMapping(params = {"startDate", "endDate"}, method = RequestMethod.PATCH)
+    public ResponseEntity<DataResponse> updateMultiplePalletBlockStatus(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String startDate,
+                                                                        @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String endDate,
+                                                                        @Valid @RequestBody DataResponse body) {
+        this.validatePost((Map) body.getData(), Arrays.asList("isBlocked", "recipeId"));
+        boolean isBlocked = ((Map) body.getData()).get("isBlocked").toString().equals("true");
+        int id = (Integer) ((Map) body.getData()).get("recipeId");
+        palletRepository.updateMultipleBlockStatus(LocalDate.parse(startDate), LocalDate.parse(endDate), id, isBlocked);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
