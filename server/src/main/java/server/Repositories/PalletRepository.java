@@ -199,17 +199,19 @@ public class PalletRepository extends server.Repositories.Repository {
      * @param isBlocked New block status.
      * @return Changed pallets.
      */
-    public void updateMultipleBlockStatus(LocalDate startDate, LocalDate endDate, int id, boolean isBlocked) {
+    public int updateMultipleBlockStatus(LocalDate startDate, LocalDate endDate, int id, boolean isBlocked) {
         String query = "UPDATE pallets SET isBlocked = ? WHERE recipeId = ? AND productionDate BETWEEN ? AND ?";
+        int updatedRows = 0;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, isBlocked);
             ps.setInt(2, id);
             ps.setString(3, String.valueOf(startDate));
             ps.setString(4, String.valueOf(endDate));
-            ps.executeUpdate();
+            updatedRows = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return updatedRows;
     }
 
     /**

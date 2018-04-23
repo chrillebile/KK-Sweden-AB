@@ -157,8 +157,8 @@ public class PalletController {
         this.validatePost((Map) body.getData(), Arrays.asList("isBlocked", "recipeId"));
         boolean isBlocked = ((Map) body.getData()).get("isBlocked").toString().equals("true");
         int id = (Integer) ((Map) body.getData()).get("recipeId");
-        palletRepository.updateMultipleBlockStatus(LocalDate.parse(startDate), LocalDate.parse(endDate), id, isBlocked);
-        return new ResponseEntity<>(HttpStatus.OK);
+        int updatedPallets = palletRepository.updateMultipleBlockStatus(LocalDate.parse(startDate), LocalDate.parse(endDate), id, isBlocked);
+        return new ResponseEntity<>(new DataResponse(updatedPallets), HttpStatus.OK);
     }
 
     /**
