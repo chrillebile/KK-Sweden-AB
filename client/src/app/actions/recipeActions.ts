@@ -52,7 +52,9 @@ export namespace RecipeActions {
   }
 
   function APIFailureHandler(errorObject: object | any) {
-    toast(errorObject.message);
+    toast(errorObject.message, {
+      type: 'error'
+    });
   }
 }
 

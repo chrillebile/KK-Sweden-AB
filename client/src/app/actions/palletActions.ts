@@ -165,7 +165,7 @@ export namespace PalletActions {
           isBlocked: true
         }
       }).then((response) => {
-        dispatch(updateBlockedStatusSuccess());
+        dispatch(updateBlockedStatusSuccess(response.data.data));
       })
         .catch((error) => {
           console.log('API failure when changing blocked status');
@@ -175,7 +175,10 @@ export namespace PalletActions {
     };
   }
 
-  function updateBlockedStatusSuccess() {
+  function updateBlockedStatusSuccess(numberOfUpdatedResources: number) {
+    toast('Blocked ' + numberOfUpdatedResources + ' pallet(s).', {
+      type: 'success'
+    });
     return {
       type: Type.UPDATE_PALLET_BLOCKED_SUCCESS
     };
@@ -217,7 +220,9 @@ export namespace PalletActions {
   }
 
   function APIFailureHandler(errorObject: object | any) {
-    toast(errorObject.message);
+    toast(errorObject.message, {
+      type: 'error'
+    });
   }
 }
 
