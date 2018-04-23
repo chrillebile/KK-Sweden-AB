@@ -7,6 +7,7 @@ import Header from 'Containers/Header';
 import { RecipeActions } from 'app/actions';
 import { ChangeEvent } from 'react';
 import { PalletActions } from 'app/actions';
+import { ToastContainer } from 'react-toastify';
 
 interface Props {
   recipeActions: RecipeActions,
@@ -53,6 +54,7 @@ export class PalletBlock extends React.Component<Props, State> {
   render() {
     return (
       <div>
+        <ToastContainer/>
         <Header/>
         <div>
 

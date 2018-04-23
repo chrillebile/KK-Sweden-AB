@@ -9,6 +9,7 @@ import { RecipeActions } from 'app/actions/recipeActions';
 import PalletModel from 'Models/PalletModel';
 import { PalletActions } from 'app/actions';
 import { OrderActions } from 'app/actions/orderActions';
+import { ToastContainer } from 'react-toastify';
 
 interface Props {
   recipeActions: RecipeActions,
@@ -64,6 +65,7 @@ export class PalletCreate extends React.Component<Props, State> {
   render() {
     return (
       <div>
+        <ToastContainer />
         <Header/>
         <form onSubmit={this.handleSubmit}>
           <div>

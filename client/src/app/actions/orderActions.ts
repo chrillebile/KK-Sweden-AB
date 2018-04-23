@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { RootState } from 'app/reducers';
 import axios from 'axios';
 import { APIConfig } from 'app/config';
+import { toast } from 'react-toastify';
 
 
 export namespace OrderActions {
@@ -23,7 +24,7 @@ export namespace OrderActions {
       })
         .catch((error) => {
           console.log('API failure: retrieving orders');
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -48,6 +49,10 @@ export namespace OrderActions {
     return {
       type: Type.GET_ORDERS_REQUEST
     };
+  }
+
+  function APIFailureHandler(errorObject: object | any) {
+    toast(errorObject.message);
   }
 }
 

@@ -2,6 +2,7 @@ import { Dispatch } from 'redux';
 import { RootState } from 'app/reducers';
 import axios from 'axios';
 import { APIConfig } from 'app/config';
+import { toast } from 'react-toastify';
 
 
 export namespace RecipeActions {
@@ -22,8 +23,8 @@ export namespace RecipeActions {
         dispatch(getRecipesSuccess(response.data));
       })
         .catch((error) => {
+          APIFailureHandler(error.response.data);
           console.log('API failure: retrieving recipes');
-          console.log(error);
         });
     };
   }
@@ -48,6 +49,10 @@ export namespace RecipeActions {
     return {
       type: Type.GET_RECIPES_REQUEST
     };
+  }
+
+  function APIFailureHandler(errorObject: object | any) {
+    toast(errorObject.message);
   }
 }
 

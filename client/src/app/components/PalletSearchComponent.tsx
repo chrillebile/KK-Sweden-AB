@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { PalletActions } from 'app/actions/palletActions';
 import { ChangeEvent } from 'react';
+import { PalletActions } from 'app/actions/palletActions';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface Props {
   resetPalletView: any,

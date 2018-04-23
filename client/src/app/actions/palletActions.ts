@@ -3,6 +3,7 @@ import { RootState } from 'app/reducers';
 import axios from 'axios';
 import { APIConfig } from 'app/config';
 import PalletModel from 'Models/PalletModel';
+import { toast } from 'react-toastify';
 
 
 export namespace PalletActions {
@@ -28,7 +29,7 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log('API failure');
-          console.log(error);
+          console.log(error.response);
         });
     };
   }
@@ -52,7 +53,7 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log('API failure when retrieving specific pallet');
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -77,7 +78,7 @@ export namespace PalletActions {
         dispatch(createPalletSuccess());
       })
         .catch((error) => {
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -95,7 +96,7 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log('API failure when retrieving pallets based on blocked status');
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -113,7 +114,7 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log('API failure when retrieving pallets based on customerId');
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -132,7 +133,7 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log('API failure when retrieving pallets based on timestamp');
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -150,7 +151,7 @@ export namespace PalletActions {
       })
         .catch((error) => {
           console.log('API failure when retrieving pallets based on product id');
-          console.log(error);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -167,8 +168,9 @@ export namespace PalletActions {
         dispatch(updateBlockedStatusSuccess());
       })
         .catch((error) => {
-          console.log('API failure');
-          console.log(error);
+          console.log('API failure when changing blocked status');
+          console.log(error.response);
+          APIFailureHandler(error.response.data);
         });
     };
   }
@@ -212,6 +214,10 @@ export namespace PalletActions {
     return {
       type: Type.UPDATE_PALLET_REQUEST
     };
+  }
+
+  function APIFailureHandler(errorObject: object | any) {
+    toast(errorObject.message);
   }
 }
 

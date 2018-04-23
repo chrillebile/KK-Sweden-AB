@@ -7,6 +7,7 @@ import { RootState } from 'app/reducers';
 import { omit } from 'app/utils';
 import PalletSearchComponent from 'Components/PalletSearchComponent';
 import Header from 'Containers/Header';
+import { ToastContainer } from 'react-toastify';
 
 interface Props {
   actions: PalletActions,
@@ -30,6 +31,7 @@ export class PalletSearch extends React.Component<Props> {
   render() {
     return (
       <div>
+        <ToastContainer />
         <Header/>
         <Table data={this.props.pallets.palletItems}/>
         <PalletSearchComponent actions={this.props.actions} resetPalletView={this.resetPalletView}/>
