@@ -14,10 +14,7 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Controller for pallet.
@@ -75,6 +72,9 @@ public class PalletController {
      */
     @RequestMapping(params = "isBlocked", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletsWhichBlocked(@RequestParam("isBlocked") String isBlocked) {
+        if (!isBlocked.equals("true") && !isBlocked.equals("false"))
+            throw new IllegalArgumentException("This parameter should contain either 'true' or 'false'. " +
+                    "For input boolean: isBlocked=" + isBlocked);
         boolean blocked = isBlocked.equals("true");
         List<Pallet> palletList = palletRepository.getPallets(blocked);
         List<PalletResource> palletResources = new ArrayList<>();
@@ -125,7 +125,6 @@ public class PalletController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<DataResponse> getPalletById(@PathVariable("id") String id) {
         Pallet pallet = palletRepository.getPallet(Integer.parseInt(id));
-
         return new ResponseEntity<>(new DataResponse(new PalletResource(pallet)), HttpStatus.OK);
     }
 
@@ -209,6 +208,10 @@ public class PalletController {
             if (!body.containsKey(value) || body.get(value) == null) {
                 throw new IllegalArgumentException("Parameter " + value + " is either not present or null");
             }
+        }
+        if (!body.get("isBlocked").toString().equals("true") && !body.get("isBlocked").toString().equals("false")) {
+            throw new IllegalArgumentException("This parameter should contain either 'true' or 'false'. " +
+                    "For input boolean: isBlocked=" + body.get("isBlocked").toString());
         }
     }
 }
