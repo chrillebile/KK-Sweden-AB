@@ -10,6 +10,7 @@ export class Header extends React.Component {
       <header>
         <Link to="/">Home</Link>
         <Link to="/createPallet">Create Pallet</Link>
+        <Link to="/blockPallet">Block Pallet</Link>
       </header>
     );
   }

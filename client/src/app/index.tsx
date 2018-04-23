@@ -5,12 +5,14 @@ import { BrowserRouter } from 'react-router-dom'
 import { hot } from 'react-hot-loader';
 import PalletSearch from 'Containers/PalletSearch/PalletSearch';
 import PalletCreate from 'Containers/PalletCreate';
+import { PalletBlock } from 'Containers/PalletBlock/PalletBlock';
 
 export const App = hot(module)(() => (
   <BrowserRouter>
     <div>
       <Route exact path="/" component={PalletSearch} />
       <Route path="/createPallet" component={PalletCreate} />
+      <Route path="/blockPallet" component={PalletBlock} />
     </div>
   </BrowserRouter>
 ));
