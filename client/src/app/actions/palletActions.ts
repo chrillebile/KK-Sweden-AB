@@ -12,7 +12,12 @@ export namespace PalletActions {
     GET_PALLETS_FAILURE = 'GET_PALLETS_FAILURE',
     CREATE_PALLET_REQUEST = 'CREATE_PALLET_REQUEST',
     CREATE_PALLET_SUCCESS = 'CREATE_PALLET_SUCCESS',
-    CREATE_PALLET_FAILURE = 'CREATE_PALLET_FAILURE'
+    UPDATE_PALLET_REQUEST = 'UPDATE_PALLET_REQUEST',
+    UPDATE_PALLET_SUCCESS = 'UPDATE_PALLET_SUCCESS',
+    UPDATE_PALLET_FAILURE = 'UPDATE_PALLET_FAILURE',
+    UPDATE_PALLET_BLOCKED_SUCCESS = 'UPDATE_PALLET_BLOCKED_SUCCESS',
+    UPDATE_PALLET_BLOCKED_REQUEST = 'UPDATE_PALLET_BLOCKED_REQUEST',
+    UPDATE_PALLET_BLOCKED_FAILURE = 'UPDATE_PALLET_BLOCKED_FAILURE'
   }
 
   export function getPallets() {
@@ -150,6 +155,30 @@ export namespace PalletActions {
     };
   }
 
+  export function changeBlockedStatus(recipeId: number, startDate: string, endDate: string) {
+    return (dispatch: Dispatch<RootState>) => {
+      dispatch(updatePalletRequest());
+      axios.patch(APIConfig.url + '/pallets?startDate=' + startDate + '&endDate=' + endDate, {
+        data: {
+          recipeId: recipeId,
+          isBlocked: true
+        }
+      }).then((response) => {
+        dispatch(updateBlockedStatusSuccess());
+      })
+        .catch((error) => {
+          console.log('API failure');
+          console.log(error);
+        });
+    };
+  }
+
+  function updateBlockedStatusSuccess() {
+    return {
+      type: Type.UPDATE_PALLET_BLOCKED_SUCCESS
+    };
+  }
+
   function getPalletsSuccess(payload: object | null) {
     return {
       type: Type.GET_PALLETS_SUCCESS,
@@ -176,6 +205,12 @@ export namespace PalletActions {
   function createPalletSuccess() {
     return {
       type: Type.CREATE_PALLET_SUCCESS
+    };
+  }
+
+  function updatePalletRequest() {
+    return {
+      type: Type.UPDATE_PALLET_REQUEST
     };
   }
 }
