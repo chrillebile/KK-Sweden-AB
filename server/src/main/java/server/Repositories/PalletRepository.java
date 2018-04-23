@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The repository for accessing data from pallets.
@@ -163,6 +165,21 @@ public class PalletRepository extends server.Repositories.Repository {
             pallet.setId(rs.getLong(1));
         } catch (SQLException e) {
             e.printStackTrace();
+
+            // Return friendly error. The regex will try to match the sqlexception. Usually, sqllite exceptions are
+            // of the type '[SQLITE_CONSTRAINT]  Abort due to constraint violation (foreign key constraint failed)'
+            // The regex will group the exception code (SQLITE_CONSTRAINT) and the corresponding message.
+            // This allows us to show different errors based on the error.
+            String regex = "\\[(SQLITE_[A-Z]+)\\]\\s+(.*)";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher m = pattern.matcher(e.getLocalizedMessage());
+            m.find();
+
+            if (m.group(1).equals("SQLITE_CONSTRAINT")) {
+                throw new Error("Could not create pallet." + m.group(2));
+            }
+
+            // Generic error if we don't have anything specific to show.
             throw new Error("Could not create pallet. See error log for more information");
         }
         return pallet;
