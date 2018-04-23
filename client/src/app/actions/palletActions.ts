@@ -75,6 +75,9 @@ export namespace PalletActions {
           orderId: orderId
         }
       }).then((response) => {
+        toast('Pallet has been created', {
+          type: 'success'
+        });
         dispatch(createPalletSuccess());
       })
         .catch((error) => {

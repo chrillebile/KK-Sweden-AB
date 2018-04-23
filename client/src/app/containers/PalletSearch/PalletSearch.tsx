@@ -7,7 +7,7 @@ import { RootState } from 'app/reducers';
 import { omit } from 'app/utils';
 import PalletSearchComponent from 'Components/PalletSearchComponent';
 import Header from 'Containers/Header';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 interface Props {
   actions: PalletActions,
@@ -31,7 +31,7 @@ export class PalletSearch extends React.Component<Props> {
   render() {
     return (
       <div>
-        <ToastContainer />
+        <ToastContainer/>
         <Header/>
         <Table data={this.props.pallets.palletItems}/>
         <PalletSearchComponent actions={this.props.actions} resetPalletView={this.resetPalletView}/>
@@ -42,9 +42,12 @@ export class PalletSearch extends React.Component<Props> {
   /**
    * Function to reset the pallet list to it's default state.
    */
-  resetPalletView = () : void => {
+  resetPalletView = (): void => {
+    toast('Pallets have been reset.', {
+      type: 'success'
+    });
     this.props.actions.getPallets();
-  }
+  };
 }
 
 export default PalletSearch;
