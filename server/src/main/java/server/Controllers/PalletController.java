@@ -209,7 +209,9 @@ public class PalletController {
                 throw new IllegalArgumentException("Parameter " + value + " is either not present or null");
             }
         }
-        if (!body.get("isBlocked").toString().equals("true") && !body.get("isBlocked").toString().equals("false")) {
+
+        // If isBlocked is present, ensure it is either true or false.
+        if (body.get("isBlocked") != null && !body.get("isBlocked").toString().equals("true") && !body.get("isBlocked").toString().equals("false")) {
             throw new IllegalArgumentException("This parameter should contain either 'true' or 'false'. " +
                     "For input boolean: isBlocked=" + body.get("isBlocked").toString());
         }
