@@ -20,13 +20,16 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      */
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handleConflict(Exception ex) {
-        String bodyOfResponse = "";
-        HttpStatus status = null;
+        String bodyOfResponse;
+        HttpStatus status;
 
         // Handles custom error messages for different exceptions. Otherwise the default message in the error is used.
         if (ex instanceof NoSuchElementException) {
             bodyOfResponse = "The item you were searching for was not found.";
             status = HttpStatus.NOT_FOUND;
+        } else if (ex instanceof NumberFormatException) {
+            bodyOfResponse = "This parameter should only contain numbers. " + ex.getMessage();
+            status = HttpStatus.BAD_REQUEST;
         } else {
             bodyOfResponse = ex.getLocalizedMessage();
             status = HttpStatus.BAD_REQUEST;
