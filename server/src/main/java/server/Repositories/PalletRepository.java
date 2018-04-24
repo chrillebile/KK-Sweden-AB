@@ -100,7 +100,7 @@ public class PalletRepository extends server.Repositories.Repository {
      * @return The found pallets.
      */
     public List<Pallet> getPallets(Integer id) {
-        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId FROM pallets JOIN recipes ON recipes.id = pallets.recipeId WHERE pallets.recipeId = ?";
+        String query = "SELECT pallets.id, productionDate, isBlocked, location, deliveryTime, recipeId FROM pallets JOIN recipes ON recipes.id = pallets.recipeId WHERE pallets.recipeId = ?";
         List<Pallet> palletList = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
@@ -118,7 +118,7 @@ public class PalletRepository extends server.Repositories.Repository {
      * @return The found pallets.
      */
     public List<Pallet> getPalletsByBlockStatus(Integer id) {
-        String query = "SELECT pallets.id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId " +
+        String query = "SELECT pallets.id, productionDate, isBlocked, location, deliveryTime, orderId " +
                 "FROM pallets " +
                 "JOIN orders ON orders.id = pallets.orderId " +
                 "WHERE orders.customerId = ? AND pallets.deliveryTime < CURRENT_TIMESTAMP";
@@ -141,28 +141,17 @@ public class PalletRepository extends server.Repositories.Repository {
      * @return An empty Pallet object where only the id is set.
      */
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
-        String query = "INSERT INTO pallets (amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        Pallet pallet;
+        String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
+                "VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            connection.setAutoCommit(false);
-            ps.setInt(1, palletToBeCreated.getAmount());
-            ps.setObject(2, palletToBeCreated.getProductionDate());
-            ps.setBoolean(3, palletToBeCreated.isBlocked());
-            ps.setString(4, palletToBeCreated.getLocation());
-            ps.setTimestamp(5, palletToBeCreated.getDeliveryTime());
-            ps.setInt(6, recipeId);
-            ps.setInt(7, orderId);
+            ps.setObject(1, palletToBeCreated.getProductionDate());
+            ps.setBoolean(2, palletToBeCreated.isBlocked());
+            ps.setString(3, palletToBeCreated.getLocation());
+            ps.setTimestamp(4, palletToBeCreated.getDeliveryTime());
+            ps.setInt(5, recipeId);
+            ps.setInt(6, orderId);
 
             ps.executeUpdate();
-
-            PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
-            ResultSet rs = row.executeQuery();
-
-            connection.commit();
-
-            pallet = new Pallet();
-            pallet.setId(rs.getLong(1));
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -182,7 +171,29 @@ public class PalletRepository extends server.Repositories.Repository {
             // Generic error if we don't have anything specific to show.
             throw new Error("Could not create pallet. See error log for more information");
         }
+
+        // This could be done via a transaction, but at the moment sqlite for some reason will lock the recipes and
+        // orders tables, rendering those two tables unusable. Until that is fixed, this is a workaround. First we
+        // update, then release the database. Then the last row is retrieved.
+        Pallet pallet = new Pallet();
+        pallet.setId(this.getLastInsertedRowId());
         return pallet;
+    }
+
+    /**
+     * Get latest inserted element.
+     *
+     * @return The row id of the last inserted element.
+     */
+    private long getLastInsertedRowId() {
+
+        try (PreparedStatement ps = connection.prepareStatement("SELECT last_insert_rowid()")) {
+            ResultSet rs = ps.executeQuery();
+            return rs.getLong(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     /**
@@ -243,9 +254,9 @@ public class PalletRepository extends server.Repositories.Repository {
         List<Pallet> palletList = new ArrayList<>();
         // next() returns true if there were more rows found
         while (rs.next()) {
-            palletList.add(new Pallet(rs.getInt("id"), rs.getInt("amount"),
-                    LocalDate.parse(rs.getString("productionDate")), rs.getBoolean("isBlocked"),
-                    rs.getString("location"), rs.getTimestamp("deliveryTime")));
+            palletList.add(new Pallet(rs.getInt("id"), LocalDate.parse(rs.getString("productionDate")),
+                    rs.getBoolean("isBlocked"), rs.getString("location"),
+                    rs.getTimestamp("deliveryTime")));
         }
 
         if (palletList.isEmpty()) {

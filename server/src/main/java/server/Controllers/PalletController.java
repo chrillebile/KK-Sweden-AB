@@ -162,20 +162,19 @@ public class PalletController {
     }
 
     /**
-     * Create a pallet. Required fields are amount, productionDate, blocked, recipeId and orderId.
+     * Create a pallet. Required fields are productionDate, blocked, recipeId and orderId.
      *
      * @param body
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<DataResponse> createPallet(@Valid @RequestBody DataResponse body) {
-        this.validatePost((Map) body.getData(), Arrays.asList("amount", "productionDate", "blocked", "recipeId", "orderId"));
+        this.validatePost((Map) body.getData(), Arrays.asList("productionDate", "blocked", "recipeId", "orderId"));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d");
 
         Pallet pallet = new Pallet();
 
-        pallet.setAmount((Integer) ((Map) body.getData()).get("amount"));
         if (((Map) body.getData()).get("productionDate") == null) {
             pallet.setProductionDate(null);
         } else {

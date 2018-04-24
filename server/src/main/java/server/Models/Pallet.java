@@ -8,15 +8,13 @@ import java.util.Date;
 public class Pallet {
 
     private long id;
-    private int amount;
     private LocalDate productionDate;
     private boolean isBlocked;
     private String location;
     private Timestamp deliveryTime;
 
-    public Pallet(long id, int amount, LocalDate productionDate, boolean isBlocked, String location, Timestamp deliveryTime) {
+    public Pallet(long id, LocalDate productionDate, boolean isBlocked, String location, Timestamp deliveryTime) {
         this.id = id;
-        this.amount = amount;
         this.productionDate = productionDate;
         this.isBlocked = isBlocked;
         this.location = location;
@@ -28,10 +26,6 @@ public class Pallet {
 
     public long getId() {
         return id;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 
     public LocalDate getProductionDate() {
@@ -52,10 +46,6 @@ public class Pallet {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public void setProductionDate(LocalDate productionDate) {
