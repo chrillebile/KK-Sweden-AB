@@ -176,6 +176,11 @@ public class PalletRepository extends server.Repositories.Repository {
         return pallet;
     }
 
+    /**
+     * Get latest inserted element.
+     *
+     * @return Latest inserted element.
+     */
     private Pallet getLast(){
         Pallet pallet = new Pallet();
         try(PreparedStatement ps = connection.prepareStatement("SELECT last_insert_rowid()")){
