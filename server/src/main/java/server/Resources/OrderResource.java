@@ -1,16 +1,17 @@
 package server.Resources;
 
 import server.Models.Order;
+import java.sql.Timestamp;
 
 public class OrderResource {
 
     private final long id;
-    private final long lastDeliveryTime;
+    private final Timestamp lastDeliveryTime;
     private final int customerId;
 
     public OrderResource(Order order) {
         this.id = order.getId();
-        this.lastDeliveryTime = order.getLastDeliveryTime().getTime();
+        this.lastDeliveryTime = order.getLastDeliveryTime();
         this.customerId = order.getCustomerId();
     }
 
@@ -18,7 +19,7 @@ public class OrderResource {
         return id;
     }
 
-    public long getLastDeliveryTime() {
+    public Timestamp getLastDeliveryTime() {
         return lastDeliveryTime;
     }
 
