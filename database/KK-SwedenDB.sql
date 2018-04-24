@@ -26,7 +26,6 @@ CREATE TABLE recipes(
 DROP TABLE IF EXISTS pallets;
 CREATE TABLE pallets(
     id INTEGER,
-    amount INTEGER CHECK(amount >= 0),
     productionDate DATE,
     isBlocked BOOLEAN,
     location TEXT,
@@ -100,10 +99,10 @@ INSERT into recipes (id, name) VALUES
 (3, "SyltKakor");
 
 INSERT INTO pallets 
-(id, amount, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)
+(id, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)
 VALUES
-(1, 15, "2017-01-08", 0, "Lund", null, 2, 1),
-(2, 10, "2017-01-08", 0, "Lund", null, 3, 1);
+(1, "2017-01-08", 0, "Lund", null, 2, 1),
+(2, "2017-01-08", 0, "Lund", null, 3, 1);
 
 INSERT INTO rawMaterials (id, name, amount, unit, lastDeliveryAmount, lastDeliveryTime) VALUES
 (1, "Mjöl", 2300, 'kg', 0, null),
