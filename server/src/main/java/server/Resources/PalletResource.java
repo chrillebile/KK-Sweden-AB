@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 public class PalletResource {
     private final long id;
-    private final int amount;
     private final LocalDate productionDate;
     private final boolean isBlocked;
     private final String location;
@@ -16,7 +15,6 @@ public class PalletResource {
 
     public PalletResource(Pallet pallet) {
         this.id = pallet.getId();
-        this.amount = pallet.getAmount();
         this.productionDate = pallet.getProductionDate();
         this.isBlocked = pallet.isBlocked();
         this.location = pallet.getLocation();
@@ -26,10 +24,6 @@ public class PalletResource {
     @JsonProperty("id")
     public long getResourceId() {
         return id;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 
     public LocalDate getProductionDate() {
