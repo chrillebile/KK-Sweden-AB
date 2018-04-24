@@ -1,10 +1,9 @@
 package server.Resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.hateoas.ResourceSupport;
 import server.Models.RawMaterial;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class RawMaterialResource {
 
@@ -12,7 +11,7 @@ public class RawMaterialResource {
     private final String name;
     private final int amount;
     private final String unit;
-    private final Timestamp lastDeliveryTime;
+    private final LocalDate lastDeliveryTime;
     private final int lastDeliveryAmount;
 
     public RawMaterialResource(RawMaterial rawMaterial) {
@@ -42,7 +41,7 @@ public class RawMaterialResource {
         return unit;
     }
 
-    public Timestamp getLastDeliveryTime() {
+    public LocalDate getLastDeliveryTime() {
         return lastDeliveryTime;
     }
 

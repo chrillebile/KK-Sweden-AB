@@ -1,6 +1,6 @@
 package server.Models;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class RawMaterial {
 
@@ -8,10 +8,10 @@ public class RawMaterial {
     private final String name;
     private final int amount;
     private final String unit;
-    private final Timestamp lastDeliveryTime;
+    private final LocalDate lastDeliveryTime;
     private final int lastDeliveryAmount;
 
-    public RawMaterial(long id, String name, int amount, String unit, Timestamp lastDeliveryTime, int lastDeliveryAmount) {
+    public RawMaterial(long id, String name, int amount, String unit, LocalDate lastDeliveryTime, int lastDeliveryAmount) {
         this.id = id;
         this.name = name;
         this.amount = amount;
@@ -36,7 +36,7 @@ public class RawMaterial {
         return unit;
     }
 
-    public Timestamp getLastDeliveryTime() {
+    public LocalDate getLastDeliveryTime() {
         return lastDeliveryTime;
     }
 
