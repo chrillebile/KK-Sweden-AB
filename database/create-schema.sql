@@ -85,34 +85,3 @@ BEGIN
 END;
 
 PRAGMA foreign_keys=ON;
-INSERT INTO customers (id, name, address) VALUES
-(1, "Johan Andersson", "Magistratsvägen"),
-(2, "Peter Svensson", "Lundavägen 13");
-
-INSERT INTO orders (id, latestDeliveryTime, customerId) VALUES 
-(1, 1523224020, 1),
-(2, 1483912020, 1);
-
-INSERT into recipes (id, name) VALUES 
-(1, "ChokladKakor"),
-(2, "VaniljKakor"),
-(3, "SyltKakor");
-
-INSERT INTO pallets 
-(id, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)
-VALUES
-(1, "2017-01-08", 0, "Lund", null, 2, 1),
-(2, "2017-01-08", 0, "Lund", null, 3, 1);
-
-INSERT INTO rawMaterials (id, name, amount, unit, lastDeliveryAmount, lastDeliveryTime) VALUES
-(1, "Mjöl", 2300, 'kg', 0, null),
-(2, "Mjölk", 23, 'liter', 0, null);
-
-INSERT INTO recipeIngredients (recipeId, rawMaterialId, amount) VALUES 
-(1, 1, 3),
-(1, 2, 1),
-(2, 1, 7),
-(2, 2, 3);
-
-INSERT INTO orderRecipeAmount (orderId, recipeId, amount) VALUES 
-(1, 1, 4);
