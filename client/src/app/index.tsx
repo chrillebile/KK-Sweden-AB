@@ -6,10 +6,11 @@ import { hot } from 'react-hot-loader';
 import PalletSearch from 'Containers/PalletSearch/PalletSearch';
 import PalletCreate from 'Containers/PalletCreate';
 import { PalletBlock } from 'Containers/PalletBlock/PalletBlock';
+import '../assets/style.scss';
 
 export const App = hot(module)(() => (
   <BrowserRouter>
-    <div>
+    <div className="container">
       <Route exact path="/" component={PalletSearch} />
       <Route path="/createPallet" component={PalletCreate} />
       <Route path="/blockPallet" component={PalletBlock} />

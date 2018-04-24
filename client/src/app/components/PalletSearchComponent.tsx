@@ -36,13 +36,14 @@ export class PalletSearchComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <div className="palletSearches">
         <div>
           <button onClick={this.props.resetPalletView}>Reset View</button>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by id:
+            <br/>
             <input
               type="text"
               ref="searchByIdTbx"
@@ -51,9 +52,10 @@ export class PalletSearchComponent extends React.Component<Props, State> {
           </label>
           <button onClick={this.handleIdSearch}>Search</button>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by product:
+            <br/>
             <input
               type="text"
               onChange={this.handleProductIdChange}
@@ -63,9 +65,10 @@ export class PalletSearchComponent extends React.Component<Props, State> {
             <button onClick={this.handleProductIdSearch}>Search</button>
           </label>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by timestamp:
+            <br/>
             <input
               type="date"
               onChange={this.handleFromDateChange}
@@ -84,9 +87,10 @@ export class PalletSearchComponent extends React.Component<Props, State> {
             <button onClick={this.handleTimeSpanSearch}>Search</button>
           </label>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by delivery to customer:
+            <br/>
             <input
               type="text"
               onChange={this.handleCustomerIdChange}
@@ -96,9 +100,10 @@ export class PalletSearchComponent extends React.Component<Props, State> {
             <button onClick={this.handleCustomerIdSearch}>Search</button>
           </label>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search for blocked pallets:
+            <br/>
             <label>
               <input
                 type="checkbox"

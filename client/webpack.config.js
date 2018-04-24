@@ -77,6 +77,13 @@ module.exports = {
           ]
         })
       },
+      {
+        test:/\.scss$/,
+        use: ExtractTextPlugin.extract({
+          use: ['style-loader','css-loader', 'sass-loader']
+
+        })
+      },
       // static assets
       { test: /\.html$/, use: 'html-loader' },
       { test: /\.(png|svg)$/, use: 'url-loader?limit=10000' },
