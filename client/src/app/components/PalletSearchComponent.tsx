@@ -87,7 +87,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         </div>
         <div className="palletSearchItem">
           <label>
-            Search by delivery to customer:
+            Search delivered pallets to customer:
             <input
               type="text"
               onChange={this.handleCustomerIdChange}
