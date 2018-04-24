@@ -13,7 +13,6 @@ export class Table extends React.Component<Props> {
         <thead>
         <tr>
           <th>Id</th>
-          <th>Amount</th>
           <th>Production Date</th>
           <th>Location</th>
           <th>Delivery Time</th>
@@ -25,7 +24,6 @@ export class Table extends React.Component<Props> {
           return (
             <tr key={row.id}>
               <td>{row.id}</td>
-              <td>{row.amount}</td>
               <td>{row.productionDate}</td>
               <td>{row.location}</td>
               <td>{row.deliveryTime ? row.deliveryTime : 'None'}</td>

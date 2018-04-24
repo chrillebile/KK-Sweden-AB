@@ -21,7 +21,6 @@ interface Props {
 
 interface State {
   formState: {
-    amount: string | number,
     productionDate: string,
     location: string,
     blocked: boolean,
@@ -47,7 +46,6 @@ export class PalletCreate extends React.Component<Props, State> {
 
     this.state = {
       formState: {
-        amount: '',
         productionDate: '',
         location: '',
         blocked: false,
@@ -68,17 +66,6 @@ export class PalletCreate extends React.Component<Props, State> {
         <ToastContainer />
         <Header/>
         <form onSubmit={this.handleSubmit}>
-          <div>
-            <label>
-              Amount:
-              <input
-                type="number"
-                onChange={this.handleAmountChange}
-                value={this.state.formState.amount}
-                placeholder="Enter amount"
-                required/>
-            </label>
-          </div>
           <div>
             <label>
               Production Date:
@@ -146,12 +133,6 @@ export class PalletCreate extends React.Component<Props, State> {
     );
   }
 
-  handleAmountChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    this.setState({
-      formState: Object.assign({}, this.state.formState, { amount: parseInt(event.target.value) })
-    });
-  };
-
   handleProductionDateChange = (event: ChangeEvent<HTMLInputElement>): void => {
     this.setState({
       formState: Object.assign({}, this.state.formState, { productionDate: event.target.value })
@@ -191,7 +172,6 @@ export class PalletCreate extends React.Component<Props, State> {
       blocked: formState.blocked,
       location: formState.location,
       deliveryTime: null,
-      amount: formState.amount as number
     };
 
     this.props.palletActions.createPallet(pallet, formState.recipeId, formState.orderId);
