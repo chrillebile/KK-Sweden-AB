@@ -66,7 +66,6 @@ export namespace PalletActions {
       dispatch(createPalletRequest());
       axios.post(APIConfig.url + '/pallets', {
         data: {
-          amount: pallet.amount,
           productionDate: pallet.productionDate,
           location: pallet.location,
           deliveryTime: pallet.deliveryTime,
