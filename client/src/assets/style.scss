@@ -1,22 +1,95 @@
-.palletSearches {
-  .palletSearchItem {
-    margin-bottom: 10px;
+label {
+  margin-bottom: 20px;
+}
 
-    input {
-      padding: 0px 3px;
-    }
-  }
+input {
+  padding: 0 3px;
+  margin-left: 20px;
+  margin-right: 20px;
+  height: 38px;
+  font-size: 14px;
+  border-top: transparent !important;
+  border-left: transparent !important;
+  border-right: transparent !important;
+  border-bottom: 1px #bbbbbb solid !important;
+}
+input:focus, input:hover{
+  border-bottom: 1px #888888 solid !important;
+}
+input[type="checkbox"]{
+  width: 38px;
+  top: 10px;
+  position: relative;
+  background-color: #eee;
+}
+label{
+  display: inline-block;
 }
 
 nav {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px #bbbbbb solid;
+  padding-bottom: 20px;
   a {
-    display: inline-block;
-    padding: 0px 10px;
-    margin: 10px 0px;
+    color: #000;
+    border-radius: 3px;
+    text-decoration: underline #555555;
+    margin: 10px;
   }
 }
 
 .container {
   max-width: 700px;
   margin-left: 20px;
+}
+
+table{
+  width: 100%;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #E1E1E1;
+}
+
+button{
+  display: inline-block;
+  height: 38px;
+  padding: 0 30px;
+  color: #555;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition-duration: 0.5s;
+}
+
+button:hover{
+  color: #333;
+  border-color: #888;
+  outline: 0;
+}
+
+.resetButton{
+  button{
+    float: right;
+    margin-top: 10px;
+  }
+  padding-bottom: 50px;
+}
+
+select{
+  margin-left: 20px;
+  height: 20px;
 }

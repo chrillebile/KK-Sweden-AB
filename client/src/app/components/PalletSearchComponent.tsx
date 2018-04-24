@@ -37,13 +37,12 @@ export class PalletSearchComponent extends React.Component<Props, State> {
   render() {
     return (
       <div className="palletSearches">
-        <div>
+        <div className="resetButton">
           <button onClick={this.props.resetPalletView}>Reset View</button>
         </div>
         <div className="palletSearchItem">
           <label>
             Search by id:
-            <br/>
             <input
               type="text"
               ref="searchByIdTbx"
@@ -55,7 +54,6 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div className="palletSearchItem">
           <label>
             Search by product:
-            <br/>
             <input
               type="text"
               onChange={this.handleProductIdChange}
@@ -68,7 +66,6 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div className="palletSearchItem">
           <label>
             Search by timestamp:
-            <br/>
             <input
               type="date"
               onChange={this.handleFromDateChange}
@@ -77,6 +74,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
               value={this.state.formState.fromDate}
               required
             />
+            -
             <input
               type="date"
               onChange={this.handleToDateChange}
@@ -90,7 +88,6 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div className="palletSearchItem">
           <label>
             Search by delivery to customer:
-            <br/>
             <input
               type="text"
               onChange={this.handleCustomerIdChange}
@@ -103,14 +100,12 @@ export class PalletSearchComponent extends React.Component<Props, State> {
         <div className="palletSearchItem">
           <label>
             Search for blocked pallets:
-            <br/>
             <label>
               <input
                 type="checkbox"
                 onChange={this.handleBlockedChange}
                 checked={this.state.formState.blocked}
               />
-              IsBlocked
             </label>
             <button onClick={this.handleBlockedSearch}>Search</button>
           </label>
