@@ -142,7 +142,7 @@ public class PalletRepository extends server.Repositories.Repository {
      */
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
         String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?)";
         Pallet pallet;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             connection.setAutoCommit(false);
