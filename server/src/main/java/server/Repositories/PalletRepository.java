@@ -142,10 +142,9 @@ public class PalletRepository extends server.Repositories.Repository {
      */
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
         String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?)";
         Pallet pallet;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            connection.setAutoCommit(false);
             ps.setObject(1, palletToBeCreated.getProductionDate());
             ps.setBoolean(2, palletToBeCreated.isBlocked());
             ps.setString(3, palletToBeCreated.getLocation());
@@ -154,14 +153,6 @@ public class PalletRepository extends server.Repositories.Repository {
             ps.setInt(6, orderId);
 
             ps.executeUpdate();
-
-            PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
-            ResultSet rs = row.executeQuery();
-
-            connection.commit();
-
-            pallet = new Pallet();
-            pallet.setId(rs.getLong(1));
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -180,6 +171,19 @@ public class PalletRepository extends server.Repositories.Repository {
 
             // Generic error if we don't have anything specific to show.
             throw new Error("Could not create pallet. See error log for more information");
+        }
+        pallet = getLast();
+        return pallet;
+    }
+
+    private Pallet getLast(){
+        Pallet pallet = new Pallet();
+        try(PreparedStatement ps = connection.prepareStatement("SELECT last_insert_rowid()")){
+            ResultSet rs = ps.executeQuery();
+            pallet = new Pallet();
+            pallet.setId(rs.getLong(1));
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return pallet;
     }
