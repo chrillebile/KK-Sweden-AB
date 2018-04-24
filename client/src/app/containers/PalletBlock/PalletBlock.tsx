@@ -90,6 +90,7 @@ export class PalletBlock extends React.Component<Props, State> {
             />
 
           </label>
+          <br/>
           <button onClick={this.handlePalletBlock}>Block pallets</button>
         </div>
       </div>

@@ -36,11 +36,11 @@ export class PalletSearchComponent extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
-        <div>
+      <div className="palletSearches">
+        <div className="resetButton">
           <button onClick={this.props.resetPalletView}>Reset View</button>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by id:
             <input
@@ -51,7 +51,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
           </label>
           <button onClick={this.handleIdSearch}>Search</button>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by product:
             <input
@@ -63,7 +63,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
             <button onClick={this.handleProductIdSearch}>Search</button>
           </label>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by timestamp:
             <input
@@ -74,6 +74,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
               value={this.state.formState.fromDate}
               required
             />
+            -
             <input
               type="date"
               onChange={this.handleToDateChange}
@@ -84,7 +85,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
             <button onClick={this.handleTimeSpanSearch}>Search</button>
           </label>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search by delivery to customer:
             <input
@@ -96,7 +97,7 @@ export class PalletSearchComponent extends React.Component<Props, State> {
             <button onClick={this.handleCustomerIdSearch}>Search</button>
           </label>
         </div>
-        <div>
+        <div className="palletSearchItem">
           <label>
             Search for blocked pallets:
             <label>
@@ -105,7 +106,6 @@ export class PalletSearchComponent extends React.Component<Props, State> {
                 onChange={this.handleBlockedChange}
                 checked={this.state.formState.blocked}
               />
-              IsBlocked
             </label>
             <button onClick={this.handleBlockedSearch}>Search</button>
           </label>
