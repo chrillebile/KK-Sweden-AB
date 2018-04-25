@@ -17,9 +17,10 @@ public class MyApplicationContext {
     @Bean
     public ComboPooledDataSource dataSource() throws PropertyVetoException {
         ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
-        comboPooledDataSource.setDriverClass("org.sqlite.JDBC");
-        comboPooledDataSource.setJdbcUrl("jdbc:sqlite:KK-SwedenDB.db");
-        comboPooledDataSource.setConnectionCustomizerClassName(ConnectionCustomizer.class.getName());
+        comboPooledDataSource.setDriverClass("com.mysql.jdbc.Driver");
+        comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/KK-SwedenDB");
+        comboPooledDataSource.setUser("root");
+        comboPooledDataSource.setPassword("p");
 
         return comboPooledDataSource;
     }

@@ -1,0 +1,5 @@
+# Set to UTF8 so that öäå can be shown correctly
+[mysqld]
+character-set-server = utf8
+collation-server = utf8_unicode_ci
+skip-character-set-client-handshake

@@ -1,0 +1,13 @@
+version: '3'
+services: 
+  database:
+    image: mysql:5.7.22
+    ports: 
+      - "3306:3306"
+    volumes:
+      - ./database/create-schema.sql:/docker-entrypoint-initdb.d/create-schema.sql
+      - ./database/initial-data.sql:/docker-entrypoint-initdb.d/initial-data.sql
+      - ./database/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: "p"
+      MYSQL_DATABASE: "KK-SwedenDB"

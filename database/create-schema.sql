@@ -1,4 +1,4 @@
-PRAGMA foreign_keys=OFF;
+SET FOREIGN_KEY_CHECKS=1;
 DROP TABLE IF EXISTS customers;
 CREATE TABLE customers(
     id INTEGER,
@@ -67,21 +67,4 @@ CREATE TABLE orderRecipeAmount(
     FOREIGN KEY (recipeId) REFERENCES recipes(id),
     PRIMARY KEY (orderId, recipeId)
 );
-
-DROP TRIGGER IF EXISTS updateRawMaterialAmountOnInsert;
-CREATE TRIGGER updateRawMaterialAmountOnInsert 
-BEFORE INSERT ON pallets
-BEGIN
-    update rawMaterials
-    set amount = amount - 360 * (
-        select (recipeIngredients.amount) from recipeIngredients --Get amount for one ingredient.
-        where NEW.recipeId = recipeIngredients.recipeId
-    )
-    where rawMaterials.id = (
-        select (rawMaterialId) from recipeIngredients --Get id for ingredients in the recigpe.
-        join rawMaterials
-        on recipeIngredients.rawMaterialId = rawMaterials.id
-    );
-END;
-
-PRAGMA foreign_keys=ON;
+SET FOREIGN_KEY_CHECKS=1;
