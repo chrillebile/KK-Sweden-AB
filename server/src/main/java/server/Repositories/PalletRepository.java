@@ -177,8 +177,6 @@ public class PalletRepository extends server.Repositories.Repository {
 
             pallet.setId(rs2.getLong(1));
         } catch (SQLException e) {
-            e.printStackTrace();
-
             // Return friendly error. The regex will try to match the sqlexception. Usually, sqllite exceptions are
             // of the type '[SQLITE_CONSTRAINT]  Abort due to constraint violation (foreign key constraint failed)'
             // The regex will group the exception code (SQLITE_CONSTRAINT) and the corresponding message.
