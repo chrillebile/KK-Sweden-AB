@@ -6,8 +6,12 @@ import server.Models.Pallet;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
@@ -255,9 +259,11 @@ public class PalletRepository extends server.Repositories.Repository {
         List<Pallet> palletList = new ArrayList<>();
         // next() returns true if there were more rows found
         while (rs.next()) {
+            Timestamp ts = null;
+            if(rs.getString("deliveryTime") != null) ts = new Timestamp(rs.getLong("deliveryTime")*1000);
             palletList.add(new Pallet(rs.getInt("id"), LocalDate.parse(rs.getString("productionDate")),
                     rs.getBoolean("isBlocked"), rs.getString("location"),
-                    rs.getTimestamp("deliveryTime")));
+                    ts));
         }
 
         if (palletList.isEmpty()) {
