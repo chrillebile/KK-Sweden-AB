@@ -143,25 +143,39 @@ public class PalletRepository extends server.Repositories.Repository {
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
         String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
-        Pallet pallet;
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            connection.setAutoCommit(false);
-            ps.setObject(1, palletToBeCreated.getProductionDate());
-            ps.setBoolean(2, palletToBeCreated.isBlocked());
-            ps.setString(3, palletToBeCreated.getLocation());
-            ps.setTimestamp(4, palletToBeCreated.getDeliveryTime());
-            ps.setInt(5, recipeId);
-            ps.setInt(6, orderId);
+        String rawMaterialsToUpdate = "SELECT rawMaterials.Id AS rmId,  recipeIngredients.amount AS riAmount " +
+                "FROM recipeIngredients JOIN rawMaterials on rawMaterials.id = recipeIngredients.rawMaterialId " +
+                "WHERE recipeIngredients.recipeId = ?";
+        String updateRawMaterial = "UPDATE rawMaterials SET amount = amount - 360 * ? WHERE rawMaterials.id = ?";
+        Pallet pallet = new Pallet();
 
-            ps.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(rawMaterialsToUpdate)) {
+            connection.setAutoCommit(false);
+            ps.setInt(1, recipeId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                PreparedStatement ps2 = connection.prepareStatement(updateRawMaterial);
+                ps2.setInt(1, rs.getInt("riAmount"));
+                ps2.setInt(2, rs.getInt("rmId"));
+                ps2.executeUpdate();
+            }
+
+            PreparedStatement ps3 = connection.prepareStatement(query);
+            ps3.setObject(1, palletToBeCreated.getProductionDate());
+            ps3.setBoolean(2, palletToBeCreated.isBlocked());
+            ps3.setString(3, palletToBeCreated.getLocation());
+            ps3.setTimestamp(4, palletToBeCreated.getDeliveryTime());
+            ps3.setInt(5, recipeId);
+            ps3.setInt(6, orderId);
+
+            ps3.executeUpdate();
 
             PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
-            ResultSet rs = row.executeQuery();
+            ResultSet rs2 = row.executeQuery();
 
             connection.commit();
 
-            pallet = new Pallet();
-            pallet.setId(rs.getLong(1));
+            pallet.setId(rs2.getLong(1));
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -181,6 +195,7 @@ public class PalletRepository extends server.Repositories.Repository {
             // Generic error if we don't have anything specific to show.
             throw new Error("Could not create pallet. See error log for more information");
         }
+
         return pallet;
     }
 
