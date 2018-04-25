@@ -45,9 +45,11 @@ sqlite3 server/KK-SwedenDB.db < database/initial-data.sql
 
 The program is split into three parts, the server that contains the API, the client that consumes the API and the MYSQL database.
 
-First of all, the required programs to run this project are [npm](https://www.npmjs.com/), [Docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/). The last two are needed to run the MYSQL database.
+First of all, the **required** programs to run this project are [npm](https://www.npmjs.com/), [Docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/install/). The last two are needed to run the MYSQL database. Make sure that these are installed before proceeding.
 
-First of all install the client's required npm packages by running. This only needs to run once.
+All commands are to be run from the root folder (./KK-Sweden-AB/).
+
+Install the client's required npm packages by running. This only needs to run once.
 ```shell
 npm install --prefix ./client install ./client
 ```
