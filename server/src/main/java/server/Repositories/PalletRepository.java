@@ -2,6 +2,7 @@ package server.Repositories;
 
 import org.springframework.stereotype.Repository;
 import server.Models.Pallet;
+import server.Models.RawMaterial;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,43 +144,77 @@ public class PalletRepository extends server.Repositories.Repository {
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
         String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setObject(1, palletToBeCreated.getProductionDate());
-            ps.setBoolean(2, palletToBeCreated.isBlocked());
-            ps.setString(3, palletToBeCreated.getLocation());
-            ps.setTimestamp(4, palletToBeCreated.getDeliveryTime());
-            ps.setInt(5, recipeId);
-            ps.setInt(6, orderId);
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-
-            // Return friendly error. The regex will try to match the sqlexception. Usually, sqllite exceptions are
-            // of the type '[SQLITE_CONSTRAINT]  Abort due to constraint violation (foreign key constraint failed)'
-            // The regex will group the exception code (SQLITE_CONSTRAINT) and the corresponding message.
-            // This allows us to show different errors based on the error.
-            String regex = "\\[(SQLITE_[A-Z]+)\\]\\s+(.*)";
-            Pattern pattern = Pattern.compile(regex);
-            Matcher m = pattern.matcher(e.getLocalizedMessage());
-            m.find();
-
-            if (m.group(1).equals("SQLITE_CONSTRAINT")) {
-                throw new Error("Could not create pallet." + m.group(2));
-            }
-
-            // Generic error if we don't have anything specific to show.
-            throw new Error("Could not create pallet. See error log for more information");
-        }
-
-        // This could be done via a transaction, but at the moment sqlite for some reason will lock the recipes and
-        // orders tables, rendering those two tables unusable. Until that is fixed, this is a workaround. First we
-        // update, then release the database. Then the last row is retrieved.
         Pallet pallet = new Pallet();
-        pallet.setId(this.getLastInsertedRowId());
+        //if (this.updateRawMaterialAmount(recipeId)) {
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
+                ps.setObject(1, palletToBeCreated.getProductionDate());
+                ps.setBoolean(2, palletToBeCreated.isBlocked());
+                ps.setString(3, palletToBeCreated.getLocation());
+                ps.setTimestamp(4, palletToBeCreated.getDeliveryTime());
+                ps.setInt(5, recipeId);
+                ps.setInt(6, orderId);
+
+                ps.executeUpdate();
+
+                PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
+                ResultSet rs = row.executeQuery();
+
+                connection.commit();
+
+                pallet.setId(rs.getLong(1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+                // Return friendly error. The regex will try to match the sqlexception. Usually, sqllite exceptions are
+                // of the type '[SQLITE_CONSTRAINT]  Abort due to constraint violation (foreign key constraint failed)'
+                // The regex will group the exception code (SQLITE_CONSTRAINT) and the corresponding message.
+                // This allows us to show different errors based on the error.
+                String regex = "\\[(SQLITE_[A-Z]+)\\]\\s+(.*)";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher m = pattern.matcher(e.getLocalizedMessage());
+                m.find();
+
+                if (m.group(1).equals("SQLITE_CONSTRAINT")) {
+                    throw new Error("Could not create pallet." + m.group(2));
+                }
+
+                // Generic error if we don't have anything specific to show.
+                throw new Error("Could not create pallet. See error log for more information");
+            }
+        //}
         return pallet;
     }
 
+    /**
+     * Update amount on rawMaterials over one transaction.
+     *
+     * @param recipeId Recipe ID.
+     * @return If it succeeded.
+     */
+   /* private boolean updateRawMaterialAmount(int recipeId) {
+        String rawMaterialsToUpdate = "SELECT rawMaterials.Id AS rmId,  recipeIngredients.amount AS riAmount " +
+                "FROM recipeIngredients JOIN rawMaterials on rawMaterials.id = recipeIngredients.rawMaterialId " +
+                "WHERE recipeIngredients.recipeId = ?";
+        String updateRawMaterial = "UPDATE rawMaterials SET amount = amount - 360 * ? WHERE rawMaterials.id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(rawMaterialsToUpdate)) {
+            connection.setAutoCommit(false);
+            ps.setInt(1, recipeId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                PreparedStatement ps2 = connection.prepareStatement(updateRawMaterial);
+                ps2.setInt(1, rs.getInt("riAmount"));
+                ps2.setInt(2, rs.getInt("rmId"));
+                ps2.executeUpdate();
+            }
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+*/
     /**
      * Get latest inserted element.
      *
