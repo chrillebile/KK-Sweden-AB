@@ -20,7 +20,7 @@ The model is in the file [`er-model.png`](er-model.png):
 
 ## Relations
 + recipes(__id__, name)
-+ pallets(__id__, amount, productionDate, isBlocked, location, deliveryTime, _recipeId_, _orderId_)
++ pallets(__id__, productionDate, isBlocked, location, deliveryTime, _recipeId_, _orderId_)
 + orders(__orderId__, latestDeliveryTime, _customerId_)
 + customers(__id__, name, address)
 + orderRecipeAmount(amount, **_orderId_**, **_recipeId_**)
