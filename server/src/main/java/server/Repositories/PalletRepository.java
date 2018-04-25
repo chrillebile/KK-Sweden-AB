@@ -145,7 +145,7 @@ public class PalletRepository extends server.Repositories.Repository {
         String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
         Pallet pallet = new Pallet();
-        //if (this.updateRawMaterialAmount(recipeId)) {
+        if (this.updateRawMaterialAmount(recipeId)) {
             try (PreparedStatement ps = connection.prepareStatement(query)) {
                 connection.setAutoCommit(false);
                 ps.setObject(1, palletToBeCreated.getProductionDate());
@@ -157,12 +157,13 @@ public class PalletRepository extends server.Repositories.Repository {
 
                 ps.executeUpdate();
 
-                PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
+                PreparedStatement row = connection.prepareStatement("SELECT LAST_INSERT_ID()");
                 ResultSet rs = row.executeQuery();
 
                 connection.commit();
-
-                pallet.setId(rs.getLong(1));
+                if (rs.next()) {
+                    pallet.setId(rs.getLong(1));
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
 
@@ -182,7 +183,7 @@ public class PalletRepository extends server.Repositories.Repository {
                 // Generic error if we don't have anything specific to show.
                 throw new Error("Could not create pallet. See error log for more information");
             }
-        //}
+        }
         return pallet;
     }
 
@@ -192,7 +193,7 @@ public class PalletRepository extends server.Repositories.Repository {
      * @param recipeId Recipe ID.
      * @return If it succeeded.
      */
-   /* private boolean updateRawMaterialAmount(int recipeId) {
+   private boolean updateRawMaterialAmount(int recipeId) {
         String rawMaterialsToUpdate = "SELECT rawMaterials.Id AS rmId,  recipeIngredients.amount AS riAmount " +
                 "FROM recipeIngredients JOIN rawMaterials on rawMaterials.id = recipeIngredients.rawMaterialId " +
                 "WHERE recipeIngredients.recipeId = ?";
@@ -214,7 +215,7 @@ public class PalletRepository extends server.Repositories.Repository {
         }
         return true;
     }
-*/
+
     /**
      * Get latest inserted element.
      *

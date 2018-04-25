@@ -1,7 +1,7 @@
 SET FOREIGN_KEY_CHECKS=1;
 DROP TABLE IF EXISTS customers;
 CREATE TABLE customers(
-    id INTEGER,
+    id INTEGER AUTO_INCREMENT,
     name TEXT,
     address TEXT,
     PRIMARY KEY (id)
@@ -9,7 +9,7 @@ CREATE TABLE customers(
 
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
-    id INTEGER,
+    id INTEGER AUTO_INCREMENT,
     latestDeliveryTime TIMESTAMP,
     customerId INTEGER,
     PRIMARY KEY (id),
@@ -18,14 +18,14 @@ CREATE TABLE orders(
 
 DROP TABLE IF EXISTS recipes;
 CREATE TABLE recipes(
-    id INTEGER,
+    id INTEGER AUTO_INCREMENT,
     name TEXT,
     PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS pallets;
 CREATE TABLE pallets(
-    id INTEGER,
+    id INTEGER AUTO_INCREMENT,
     productionDate DATE,
     isBlocked BOOLEAN,
     location TEXT,
@@ -39,7 +39,7 @@ CREATE TABLE pallets(
 
 DROP TABLE IF EXISTS rawMaterials;
 CREATE TABLE rawMaterials(
-    id INTEGER,
+    id INTEGER AUTO_INCREMENT,
     name TEXT,
     amount INTEGER CHECK(amount >= 0),
     unit TEXT,
