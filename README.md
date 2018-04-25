@@ -47,7 +47,7 @@ The program is split into two parts, the server that contains the API and the cl
 
 First of all install the client's required npm packages by running. This only needs to run once.
 ```shell
-npm install --prefix ./client install ./client
+npm install --prefix ./client 
 ```
 
 Then start the server and client by running them in different terminal windows:
