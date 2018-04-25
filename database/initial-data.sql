@@ -96,12 +96,12 @@ INSERT INTO orderRecipeAmount (orderId, recipeId, amount) VALUES
 INSERT INTO pallets 
 (id, productionDate, isBlocked, location, deliveryTime, recipeId, orderId)
 VALUES
-(1, "2000-12-23", 0, "Lund", null, 2, 2),
+(1, "2000-12-23", 0, "Lund", 1524665256, 2, 2),
 (2, "1997-11-12", 0, "Malmö", null, 1, 1),
 (3, "2013-07-11", 0, "Göteborg", null, 4, 4),
 (4, "2016-06-01", 0, "Stockholm", null, 6, 5),
 (5, "2015-05-03", 0, "Lund", null, 5, 5),
 (6, "2008-04-04", 0, "Lund", null, 3, 3),
-(7, "2011-03-09", 0, "Lund", null, 1, 1),
+(7, "2011-03-09", 0, "Lund", 1524665256, 1, 1),
 (8, "2018-02-05", 0, "Lund", null, 1, 1),
 (9, date('now'), 0, "Lund", null, 3, null);
