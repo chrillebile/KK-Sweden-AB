@@ -1,15 +1,14 @@
 package server.Repositories;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class Repository {
+
     @Autowired
-    private ComboPooledDataSource dataSource;
+    private Connection dbConnection;
 
     /**
      * Contains the database connection that the repository uses.
@@ -23,10 +22,6 @@ public class Repository {
      */
     @PostConstruct
     private void createConnection() {
-        try {
-            connection = dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        connection = dbConnection;
     }
 }

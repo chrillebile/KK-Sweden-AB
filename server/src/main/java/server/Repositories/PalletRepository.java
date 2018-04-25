@@ -143,7 +143,9 @@ public class PalletRepository extends server.Repositories.Repository {
     public Pallet createPallet(Pallet palletToBeCreated, int recipeId, int orderId) {
         String query = "INSERT INTO pallets (productionDate, isBlocked, location, deliveryTime, recipeId, orderId)" +
                 "VALUES (?, ?, ?, ?, ?, ?)";
+        Pallet pallet;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
+            connection.setAutoCommit(false);
             ps.setObject(1, palletToBeCreated.getProductionDate());
             ps.setBoolean(2, palletToBeCreated.isBlocked());
             ps.setString(3, palletToBeCreated.getLocation());
@@ -152,6 +154,14 @@ public class PalletRepository extends server.Repositories.Repository {
             ps.setInt(6, orderId);
 
             ps.executeUpdate();
+
+            PreparedStatement row = connection.prepareStatement("SELECT last_insert_rowid()");
+            ResultSet rs = row.executeQuery();
+
+            connection.commit();
+
+            pallet = new Pallet();
+            pallet.setId(rs.getLong(1));
         } catch (SQLException e) {
             e.printStackTrace();
 
@@ -171,29 +181,7 @@ public class PalletRepository extends server.Repositories.Repository {
             // Generic error if we don't have anything specific to show.
             throw new Error("Could not create pallet. See error log for more information");
         }
-
-        // This could be done via a transaction, but at the moment sqlite for some reason will lock the recipes and
-        // orders tables, rendering those two tables unusable. Until that is fixed, this is a workaround. First we
-        // update, then release the database. Then the last row is retrieved.
-        Pallet pallet = new Pallet();
-        pallet.setId(this.getLastInsertedRowId());
         return pallet;
-    }
-
-    /**
-     * Get latest inserted element.
-     *
-     * @return The row id of the last inserted element.
-     */
-    private long getLastInsertedRowId() {
-
-        try (PreparedStatement ps = connection.prepareStatement("SELECT last_insert_rowid()")) {
-            ResultSet rs = ps.executeQuery();
-            return rs.getLong(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
     }
 
     /**

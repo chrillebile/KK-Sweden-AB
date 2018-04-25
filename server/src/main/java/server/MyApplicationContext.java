@@ -1,26 +1,29 @@
 package server;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import java.beans.PropertyVetoException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Contains all the bean configuration that are inserted (by Spring) into the application context of this application.
  */
 @Component
 public class MyApplicationContext {
-    /**
-     * Create the bean that contains the connection to the database pool.
-     */
     @Bean
-    public ComboPooledDataSource dataSource() throws PropertyVetoException {
-        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
-        comboPooledDataSource.setDriverClass("org.sqlite.JDBC");
-        comboPooledDataSource.setJdbcUrl("jdbc:sqlite:KK-SwedenDB.db");
-        comboPooledDataSource.setConnectionCustomizerClassName(ConnectionCustomizer.class.getName());
+    public Connection dbConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection("jdbc:sqlite:KK-SwedenDB.db");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        return comboPooledDataSource;
+        return conn;
     }
 }
